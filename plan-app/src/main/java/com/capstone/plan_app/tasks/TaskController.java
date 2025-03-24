@@ -52,6 +52,27 @@ public class TaskController {
         }
     }
 
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<?> deleteTask(@PathVariable Long taskId) {
+        logger.info("➡️ Richiesta DELETE /api/tasks/{} ricevuta", taskId);
+        try {
+            Long userId = getAuthenticatedUserId();
+            logger.info("🔍 Eliminazione task {} per userId: {}", taskId, userId);
+
+            boolean deleted = taskService.deleteTask(taskId);
+            if (deleted) {
+                logger.info("✅ Task {} eliminata con successo", taskId);
+                return ResponseEntity.ok().build();
+            } else {
+                logger.warn("⚠️ Task {} non trovata o non autorizzata per userId: {}", taskId, userId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task non trovata o non autorizzata");
+            }
+        } catch (Exception e) {
+            logger.error("❌ Errore nell'eliminazione della task {}: {}", taskId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nell'eliminazione della task");
+        }
+    }
+
     // Endpoint per ottenere tutte le task dell'utente autenticato
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getTasks(@RequestHeader("Authorization") String token) {

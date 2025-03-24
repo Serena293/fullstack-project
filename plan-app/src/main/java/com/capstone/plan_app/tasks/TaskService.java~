@@ -66,36 +66,26 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
     }
 
-//    @Transactional
-//    public boolean deleteTask(Long taskId) {
-//        AppUsers user = getAuthenticatedUser();
-//        System.out.println("🔍 Utente autenticato: " + user.getUserId());
-//
-//        Task task = taskRepository.findById(taskId)
-//                .orElseThrow(() -> new RuntimeException("❌ Task non trovata con ID: " + taskId));
-//
-//        System.out.println("📝 Task trovata, assegnata all'utente con ID: " + task.getAppUser().getUserId());
-//
-//        if (!task.getAppUser().getUserId().equals(user.getUserId())) {
-//            System.out.println("🚫 Non autorizzato a eliminare questa task!");
-//            throw new RuntimeException("Non autorizzato a eliminare questa task");
-//        }
-//
-//        taskRepository.delete(task);
-//        taskRepository.flush();
-//        System.out.println("✅ Task eliminata con successo!");
-//        return true;
-//    }
-
     @Transactional
     public boolean deleteTask(Long taskId) {
         AppUsers user = getAuthenticatedUser();
-        taskRepository.deleteTaskById(taskId, user.getUserId());
+        System.out.println("🔍 Utente autenticato: " + user.getUserId());
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("❌ Task non trovata con ID: " + taskId));
+
+        System.out.println("📝 Task trovata, assegnata all'utente con ID: " + task.getAppUser().getUserId());
+
+        if (!task.getAppUser().getUserId().equals(user.getUserId())) {
+            System.out.println("🚫 Non autorizzato a eliminare questa task!");
+            throw new RuntimeException("Non autorizzato a eliminare questa task");
+        }
+
+        taskRepository.delete(task);
+        taskRepository.flush();
+        System.out.println("✅ Task eliminata con successo!");
         return true;
     }
-
-
-
 
     // Metodo per ottenere le task di un utente specifico tramite ID
     public List<TaskDTO> getTasksByUserId(Long userId) {

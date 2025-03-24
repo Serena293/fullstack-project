@@ -5,7 +5,7 @@ import BoardComponent from "./BoardComponent";
 import TaskList from "./TaskList";
 import CustomNavbar from "../sharedcomponents/CustomNavbar";
 import Footer from "../sharedcomponents/Footer";
-import { useTasks } from "../../hooks/useTasks"; 
+import  useTasks  from "../../hooks/useTasks"; 
 import useAuth from "../../hooks/useAuth"; 
 import TaskItem from "../sharedcomponents/TaskItem";  
 
@@ -14,7 +14,7 @@ const HomePage = () => {
   
   // Recupera user e task
   const { currentUser } = useAuth();
-  const { tasks, refreshTasks, error } = useTasks(currentUser?.userId);
+  const { tasks, refreshTasks, error, deleteTask } = useTasks(currentUser?.userId);
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -39,13 +39,14 @@ const HomePage = () => {
 
       <div className="mb-4">
         <h2>Post-it</h2>
-        <BoardComponent tasks={tasks?.filter((task) => task.isItPostIt)} />
+        <BoardComponent tasks={tasks?.filter((task) => task.isItPostIt)} refreshTasks={refreshTasks} deleteTask={deleteTask} />
+
       </div>
 
       {isSidebarVisible && (
         <div className="task-list-sidebar">
           <h2>Task List</h2>
-          <TaskList tasks={tasks} />
+          <TaskList tasks={tasks} refreshTasks={refreshTasks} deleteTask={deleteTask} />
         </div>
       )}
 

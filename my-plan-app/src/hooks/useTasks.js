@@ -1,27 +1,20 @@
 import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
 
-export const useTasks = () => {
+  const useTasks = () => {
   const { currentUser } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [error, setError] = useState(null);
 
+  // 🔄 Recupera le task quando cambia l'utente o viene richiesto un refresh
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        if (!currentUser?.userId) {
-          throw new Error("Tentativo di fetch delle task senza userId!");
-        }
+        if (!currentUser?.userId) return;
 
         const token = localStorage.getItem("authToken");
-        if (!token) {
-          throw new Error("Token di autenticazione mancante!");
-        }
         const formattedToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
-
-        console.log("Fetching tasks for user ID:", currentUser.userId);
-        console.log("Using token:", formattedToken);
 
         const response = await fetch(`http://localhost:8080/api/tasks/user/${currentUser.userId}`, {
           method: "GET",
@@ -31,15 +24,9 @@ export const useTasks = () => {
           },
         });
 
-        console.log("Response status:", response.status);
-
-        if (!response.ok) {
-          throw new Error(`Errore HTTP: ${response.status} - ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
 
         const data = await response.json();
-        console.log("Tasks fetched:", data);
-
         setTasks(data);
         setError(null);
       } catch (error) {
@@ -48,12 +35,37 @@ export const useTasks = () => {
       }
     };
 
-    if (currentUser?.userId) {
-      fetchTasks();
-    }
+    fetchTasks();
   }, [currentUser, refresh]);
 
+  // 🔄 Funzione per forzare l'aggiornamento della lista task
   const refreshTasks = () => setRefresh((prev) => !prev);
 
-  return { tasks, refreshTasks, error };
+  // ❌ Funzione per eliminare una task
+  const deleteTask = async (taskId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const formattedToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+      const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: { Authorization: formattedToken,
+          "Content-Type": "application/json"
+         },
+        
+      });
+
+      if (!response.ok) throw new Error("Errore nell'eliminazione della task");
+
+     // console.log(`✅ Task ${taskId} eliminata con successo`);
+      //setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId));
+      refreshTasks();
+    } catch (error) {
+      console.error("Errore nella cancellazione della task:", error);
+    }
+  };
+
+  return { tasks, refreshTasks, deleteTask, error };
 };
+
+export default useTasks
