@@ -1,0 +1,79 @@
+package com.capstone.plan_app.user;
+
+import com.capstone.plan_app.security.CustomUserDetailsService;
+import com.capstone.plan_app.security.JwtUtil;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AppUserService {
+
+    private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
+
+    public AppUserService(AppUserRepository userRepository, PasswordEncoder passwordEncoder,
+                          AuthenticationManager authenticationManager, JwtUtil jwtUtil,
+                          CustomUserDetailsService userDetailsService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
+    // 🔹 Register new user
+    public String registerUser(AppUsers user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return "User registered successfully!";
+    }
+
+    // 🔹 Authenticate user and return JWT token
+    public String authenticateUser(String username, String password) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return jwtUtil.generateToken(userDetails.getUsername());
+    }
+
+    // 🔹 Register a user from DTO
+    public ResponseEntity<String> register(@Valid AppUserDTO appUserDTO) {
+        // Convert AppUserDTO to AppUsers entity
+        AppUsers user = new AppUsers();
+        user.setFirstName(appUserDTO.getFirstName());
+        user.setLastName(appUserDTO.getLastName());
+        user.setUsername(appUserDTO.getUsername());
+        user.setEmail(appUserDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(appUserDTO.getPassword())); // Encode the password
+
+        // Register the user (save the user with an encoded password)
+        registerUser(user);  // Use `registerUser` method for encoding and saving the user
+
+        // Return success message
+        return ResponseEntity.ok("User registered successfully!");
+    }
+
+    // 🔹 Login and return JWT token
+    public ResponseEntity<String> login(AppUserLoginDTO appUserLoginDTO) {
+        // Step 1: Authenticate user using AuthenticationManager
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword())
+        );
+
+        // Step 2: Load user details from CustomUserDetailsService
+        UserDetails userDetails = userDetailsService.loadUserByUsername(appUserLoginDTO.getUsername());
+
+        // Step 3: Generate JWT token
+        String jwtToken = jwtUtil.generateToken(userDetails.getUsername());
+
+        // Step 4: Return JWT token as response
+        return ResponseEntity.ok("Bearer " + jwtToken); // Sending JWT token with 'Bearer' prefix
+    }
+}

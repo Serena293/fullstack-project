@@ -1,0 +1,38 @@
+package com.capstone.plan_app.security;
+
+import com.capstone.plan_app.user.AppUsers;
+import com.capstone.plan_app.user.AppUsersRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+    private final AuthenticationManager authManager;
+    private final JwtUtil jwtUtil;
+    private final AppUsersRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService userDetailsService;
+
+    public AuthService(AuthenticationManager authManager, JwtUtil jwtUtil, AppUserRepository userRepo,
+                       PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
+        this.authManager = authManager;
+        this.jwtUtil = jwtUtil;
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+    }
+
+    public String login(String username, String password) {
+        authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return jwtUtil.generateToken(userDetails.getUsername());
+    }
+
+    public void register(AppUsers user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepo.save(user);
+    }
+}

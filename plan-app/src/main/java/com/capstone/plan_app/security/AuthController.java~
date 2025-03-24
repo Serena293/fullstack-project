@@ -1,0 +1,89 @@
+package com.capstone.plan_app.security;
+
+import com.capstone.plan_app.user.AppUserDTO;
+import com.capstone.plan_app.user.AppUserLoginDTO;
+import com.capstone.plan_app.user.AppUsers;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")  // Grouping all auth-related routes under '/api/auth'
+public class AuthController {
+
+    private final AuthService authService;
+
+    // Inject AuthService
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    // Endpoint to register new user
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody AppUserDTO appUserDTO) {
+        String token = authService.register(appUserDTO).getBody();
+
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Token not generated during registration"));
+        }
+
+        return ResponseEntity.ok(Map.of("token", token));
+    }
+
+    // Endpoint to login and return JWT token
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AppUserLoginDTO appUserLoginDTO) {
+        String token = authService.login(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword()).getBody();
+
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials or token not generated"));
+        }
+
+        return ResponseEntity.ok(Map.of("token", token));
+    }
+
+    // Endpoint to get the authenticated user's details
+//    @GetMapping("/me")
+//    public ResponseEntity<?> getCurrentUser() {
+//        // Ottieni l'oggetto di autenticazione dal contesto di sicurezza
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        // Verifica se l'utente è autenticato
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
+//        }
+//
+//        // Ottieni i dettagli dell'utente autenticato
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//
+//        // Ottieni l'utente dal CustomUserDetails
+//        AppUsers currentUser = userDetails.getAppUser();
+//
+//        // Restituisci i dettagli dell'utente come risposta
+//        return ResponseEntity.ok(currentUser);
+//    }
+//}
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        // 🔹 Controlla se il principal è un CustomUserDetails
+        if (principal instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) principal;
+            AppUsers currentUser = userDetails.getAppUser();
+            return ResponseEntity.ok(currentUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid authentication principal"));
+        }
+    }}

@@ -1,0 +1,40 @@
+package com.capstone.plan_app.contacts;
+
+import com.capstone.plan_app.user.AppUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.capstone.plan_app.user.AppUsers;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ContactService {
+
+    @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
+    private AppUserRepository userRepository;
+
+
+
+    public void addContact(AppUsers currentUser, String username) {
+        AppUsers contactUser = userRepository.findByUsername(username);
+        if (contactUser != null && !contactUser.equals(currentUser)) {
+            Contact contact = new Contact();
+            contact.setAppUser(currentUser);
+            contact.setContactUser(contactUser);
+            contactRepository.save(contact);
+        } else {
+            throw new RuntimeException("Utente non valido o contatto già esistente");
+        }
+    }
+
+    public List<AppUsers> getContacts(AppUsers currentUser) {
+        List<Contact> contacts = contactRepository.findByAppUser(currentUser);
+        return contacts.stream()
+                .map(Contact::getContactUser)
+                .collect(Collectors.toList());
+    }
+}

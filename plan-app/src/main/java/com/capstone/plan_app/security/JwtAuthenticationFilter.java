@@ -1,0 +1,109 @@
+package com.capstone.plan_app.security;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService customUserDetailsService;
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService customUserDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        logger.debug("Richiesta ricevuta: {}", path);
+
+        // Evita di filtrare login e register
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = request.getHeader("Authorization");
+        logger.info("Authorization Header ricevuto: '{}'", authHeader);
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            logger.warn("Header Authorization assente o malformato");
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Prende il token eliminando "Bearer "
+        String token = authHeader.substring(7).trim();
+
+        logger.debug("Token JWT ricevuto: '{}'", token);
+
+        // Controllo validità dei caratteri nel token
+        if (!token.matches("^[a-zA-Z0-9-_.]+$")) {
+            logger.error("Token JWT contiene caratteri non validi: {}", token);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT token format");
+            return;
+        }
+
+        if (token.isEmpty()) {
+            logger.error("Token JWT vuoto");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT token");
+            return;
+        }
+
+        try {
+            String username = jwtUtil.extractUsername(token);
+            logger.debug("Username estratto dal token: {}", username);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (jwtUtil.validateToken(token, username)) {
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // Creazione e impostazione del SecurityContext
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    context.setAuthentication(authToken);
+                    SecurityContextHolder.setContext(context);
+
+                    logger.info("Autenticazione riuscita per l'utente: {}", username);
+                } else {
+                    logger.warn("Token JWT non valido per l'utente: {}", username);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Errore nella gestione del JWT: {}", e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT token");
+            return;
+        }
+
+        logger.info("SecurityContext dopo autenticazione: {}", SecurityContextHolder.getContext().getAuthentication());
+
+        chain.doFilter(request, response);
+    }
+}

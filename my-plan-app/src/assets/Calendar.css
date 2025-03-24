@@ -1,0 +1,87 @@
+/* General container for the calendar */
+#calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 100%;
+}
+
+/* Days of the week */
+.weekday {
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  color: #8b5e3b; /* Dark brown */
+}
+
+/* Single day container */
+.day-container {
+  border: 1px solid #8b5e3b; /* Dark brown */
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f5e1c8; /* Warm beige */
+  position: relative;
+}
+
+/* Hover effect */
+.day-container:hover {
+  background-color: #ffcc80; /* Warm orange */
+}
+
+/* Empty days (before the first day of the month) */
+.empty-day {
+  visibility: hidden;
+}
+
+/* Highlight for today */
+.today {
+  background-color: #ffb347; /* Warm light orange */
+  font-weight: bold;
+  color: black;
+  border: 2px solid #8b5e3b;
+}
+
+/* Task Dot */
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff8c42; /* Warm orange */
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+}
+
+h3 {
+  font-size: 25px;
+  margin: 0.25em;
+  color: #8b5e3b; /* Dark brown */
+}
+
+/* Arrow styling */
+.prev-arrow,
+.next-arrow {
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  color: #8b5e3b; /* Dark brown */
+}
+
+/* Flex layout for month navigation */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}

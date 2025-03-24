@@ -1,0 +1,7 @@
+package com.capstone.plan_app.security;
+
+class AuthRequest {
+    private String username;
+    private String password;
+    // Getters and Setters
+}
