@@ -1,11 +1,17 @@
 import { useTasks } from "../../hooks/useTasks";
 import useAuth from "../../hooks/useAuth";
 import TaskItem from "../sharedcomponents/TaskItem";
+import { useEffect } from "react";
 
 
 const BoardComponent = () => {
   const { currentUser, loading: authLoading, error: authError } = useAuth();
   const { tasks, refreshTasks, error: tasksError } = useTasks(currentUser?.id);
+
+
+  useEffect(() => {
+    refreshTasks();
+  }, [refreshTasks]);
 
   if (authLoading) return <p>🔄 Autenticazione in corso...</p>;
   if (authError) return <p>❌ Errore di autenticazione: {authError}</p>;
