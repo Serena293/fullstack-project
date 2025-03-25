@@ -73,8 +73,6 @@ public class TaskController {
         }
     }
 
-
-
     // Endpoint per ottenere tutte le task dell'utente autenticato
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getTasks(@RequestHeader("Authorization") String token) {

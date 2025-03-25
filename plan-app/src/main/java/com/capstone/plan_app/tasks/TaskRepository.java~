@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
@@ -18,10 +17,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   @Modifying
   @Query("DELETE FROM Task t WHERE t.taskId = :taskId AND t.appUser.userId = :userId")
   void deleteTaskById(@Param("taskId") Long taskId, @Param("userId") Long userId);
-
-  @Query("SELECT t FROM Task t WHERE t.taskId = :taskId AND t.appUser.userId = :userId")
-  Optional<Task> findByTaskIdAndUserId(@Param("taskId") Long taskId, @Param("userId") Long userId);
-
 
 
 }

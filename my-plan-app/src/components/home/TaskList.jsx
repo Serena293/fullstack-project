@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import TaskItem from "../sharedcomponents/TaskItem";
 
-const TaskList = ({ tasks, refreshTasks, deleteTask }) => {
- // console.log("🔍 TaskList ricevuta tasks:", tasks); 
+const TaskList = ({ tasks, refreshTasks, deleteTask, editTask }) => {
+  // console.log(" TaskList ricevuta tasks:", tasks);
 
   useEffect(() => {
     console.log("📌 useEffect: Tasks aggiornate in TaskList:", tasks);
   }, [tasks]);
 
   if (!tasks || tasks.length === 0) {
-  //  console.log("⚠️ Nessuna task da mostrare!");
+    //  console.log(" Nessuna task da mostrare!");
     return <p>Nessuna task disponibile.</p>;
   }
 
@@ -19,7 +19,13 @@ const TaskList = ({ tasks, refreshTasks, deleteTask }) => {
       <ul className="list-group">
         {tasks.map((task) => (
           <li key={task.taskId} className="list-group-item">
-            <TaskItem task={task} refreshTasks={refreshTasks} variant="regular"  deleteTask={deleteTask}/>
+            <TaskItem
+              task={task}
+              refreshTasks={refreshTasks}
+              variant="regular"
+              deleteTask={deleteTask}
+              editTask={editTask}
+            />
           </li>
         ))}
       </ul>

@@ -66,36 +66,12 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
     }
 
-//    @Transactional
-//    public boolean deleteTask(Long taskId) {
-//        AppUsers user = getAuthenticatedUser();
-//        System.out.println("🔍 Utente autenticato: " + user.getUserId());
-//
-//        Task task = taskRepository.findById(taskId)
-//                .orElseThrow(() -> new RuntimeException("❌ Task non trovata con ID: " + taskId));
-//
-//        System.out.println("📝 Task trovata, assegnata all'utente con ID: " + task.getAppUser().getUserId());
-//
-//        if (!task.getAppUser().getUserId().equals(user.getUserId())) {
-//            System.out.println("🚫 Non autorizzato a eliminare questa task!");
-//            throw new RuntimeException("Non autorizzato a eliminare questa task");
-//        }
-//
-//        taskRepository.delete(task);
-//        taskRepository.flush();
-//        System.out.println("✅ Task eliminata con successo!");
-//        return true;
-//    }
-
     @Transactional
     public boolean deleteTask(Long taskId) {
         AppUsers user = getAuthenticatedUser();
         taskRepository.deleteTaskById(taskId, user.getUserId());
         return true;
     }
-
-
-
 
     // Metodo per ottenere le task di un utente specifico tramite ID
     public List<TaskDTO> getTasksByUserId(Long userId) {
@@ -111,4 +87,33 @@ public class TaskService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public TaskDTO editTask(Long taskId, Task updatedTask) {
+        AppUsers user = getAuthenticatedUser();
+
+        Task task = taskRepository.findByTaskIdAndUserId(taskId, user.getUserId())
+                .orElseThrow(() -> new RuntimeException("Task non trovata o non autorizzata"));
+
+        task.setTitle(updatedTask.getTitle());
+        task.setDescription(updatedTask.getDescription());
+        task.setDueDate(updatedTask.getDueDate());
+        task.setIsItPostIt(updatedTask.isItPostIt());
+
+        // 4. Salvare la task aggiornata nel database
+        Task savedTask = taskRepository.save(task);
+
+        // 5. Restituire la task aggiornata come TaskDTO
+        return new TaskDTO(
+                savedTask.getTaskId(),
+                savedTask.getTitle(),
+                savedTask.getDescription(),
+                savedTask.getDueDate(),
+                savedTask.getIsItPostIt(),
+                savedTask.getAppUser().getUserId()
+        );
+    }
+
+
+
 }

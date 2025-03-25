@@ -131,4 +131,26 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<?> editTask(@PathVariable Long taskId, @Valid @RequestBody Task updatedTask) {
+        logger.info("➡️ Richiesta PUT /api/tasks/{} ricevuta. Task aggiornata: {}", taskId, updatedTask);
+
+        try {
+            Long userId = getAuthenticatedUserId();
+            logger.info("🔍 Modifica della task {} per userId: {}", taskId, userId);
+
+            TaskDTO editedTask = taskService.editTask(taskId, updatedTask);
+            logger.info("✅ Task {} modificata con successo per userId: {}", taskId, userId);
+
+            return ResponseEntity.ok(editedTask);
+        } catch (RuntimeException e) {
+            logger.warn("⚠️ Errore: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            logger.error("❌ Errore nella modifica della task {}: {}", taskId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nella modifica della task");
+        }
+    }
+
 }

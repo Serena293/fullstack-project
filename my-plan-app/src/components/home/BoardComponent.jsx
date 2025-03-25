@@ -1,7 +1,7 @@
 import TaskItem from "../sharedcomponents/TaskItem.jsx";
 
 
-const BoardComponent = ({ tasks, refreshTasks, deleteTask }) => {
+const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
   if (!tasks) return <p>⏳ Caricamento task...</p>;
 
   return (
@@ -17,6 +17,7 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask }) => {
                 refreshTasks={refreshTasks}
                 variant="post-it"
                 deleteTask={deleteTask}
+                editTask={editTask}
               />
             ))
           ) : (
