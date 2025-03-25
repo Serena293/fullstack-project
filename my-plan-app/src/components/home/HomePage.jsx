@@ -25,10 +25,10 @@ const HomePage = () => {
   if (error) return <p className="text-danger">Errore nel caricamento delle task: {error}</p>;
 
   return (
-    <section className={ `container mt-4 ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div className={`vh-100 px-5 ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <section lassName="container-fluid h-100 mt-4 px-0 ">
       <CustomNavbar toggleSidebar={toggleSidebar} />
-      <h1 className="text-center">Home Page</h1>
-
+     
       <div className="row">
         <div className="col-lg-6 col-md-12 mb-4">
           <CalendarComponent />
@@ -40,8 +40,7 @@ const HomePage = () => {
       </div>
 
       <div className="mb-4">
-        <h2>Post-it</h2>
-        <BoardComponent
+            <BoardComponent
           tasks={tasks?.filter((task) => task.isItPostIt)}
           refreshTasks={refreshTasks}
           deleteTask={deleteTask}
@@ -63,6 +62,7 @@ const HomePage = () => {
 
       <Footer />
     </section>
+    </div>
   );
 };
 

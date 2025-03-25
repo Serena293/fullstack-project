@@ -1,0 +1,123 @@
+/* Tema dinamico */
+:root {
+  --bg-light: #fef7ec;
+  --text-light: #1e1e1e;
+  --accent-light: #ffd4a6;
+  --border-light: #d2a478;
+
+  --bg-dark: #1c1c1c;
+  --text-dark: #e0e0e0;
+  --accent-dark: #00bcd4;
+  --border-dark: #357a85;
+}
+
+/* Modalità Chiara */
+.light-mode {
+  --bg: var(--bg-light);
+  --text: var(--text-light);
+  --accent: var(--accent-light);
+  --border: var(--border-light);
+}
+
+/* Modalità Scura */
+.dark-mode {
+  --bg: var(--bg-dark);
+  --text: var(--text-dark);
+  --accent: var(--accent-dark);
+  --border: var(--border-dark);
+}
+
+/* Calendario */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 100%;
+  background-color: var(--bg);
+}
+
+.weekday {
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  color: var(--border);
+}
+
+.day-container {
+  border: 1px solid var(--border);
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--bg);
+  position: relative;
+}
+
+.day-container:hover {
+  background-color: var(--accent);
+}
+
+.empty-day {
+  visibility: hidden;
+}
+
+.today {
+  background-color: var(--accent);
+  font-weight: bold;
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+}
+
+/* Intestazione del calendario */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+h3.month-title {
+  font-size: 25px;
+  color: var(--border);
+  text-align: center;
+  flex-grow: 1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prev-arrow, .next-arrow{
+  cursor: pointer;
+  font-size: 30px;
+  user-select: none;
+  color: var(--border);
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  
+}
+
+.calendar-header{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2rem;
+}

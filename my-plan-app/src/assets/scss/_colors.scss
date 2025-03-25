@@ -1,15 +1,15 @@
-// 🎨 Light Mode Colors
-$light-bg: hsl(40, 100%, 90%);       // Bianco caldo (sfondo principale)
-$light-text: #212529;                // Grigio molto scuro per alta leggibilità
-$light-accent: #FF8800;              // Arancio acceso per evidenziare
-$light-border: #B08968;              // Marrone caldo per dettagli
-$light-form-bg: #ffffff;             // Bianco per maggiore contrasto
-$light-navbar-bg: hsl(40, 100%, 80%); // Beige più scuro, ma simile allo sfondo
+// 🎨 Light Mode Colors (con nuove tonalità per la navbar)
+$light-bg: #fef7ec;       // Beige luminoso e caldo (sfondo principale)
+$light-text: #1e1e1e;     // Grigio scuro per alta leggibilità
+$light-accent: #ffd4a6;   // Pesca tenue per dettagli
+$light-border: #d2a478;   // Marrone chiaro per eleganza
+$light-form-bg: hsl(0, 0%, 100%);  // Bianco per contrasto
+$light-navbar-bg: #ffad5c; // Arancione dorato per un look accogliente
 
-// 🎨 Dark Mode Colors
-$dark-bg: #1E1E1E;        // Grigio scuro moderno (meno pesante del nero)
-$dark-text: #D4D4D4;      // Grigio chiaro per miglior leggibilità su fondo scuro
-$dark-accent: #BB86FC;    // Viola soft per un tocco moderno
-$dark-border: #444444;    // Grigio medio per bordi e separatori
-$dark-form-bg: #252525;   // Grigio scuro per contrasto con lo sfondo
-$dark-navbar-bg: #292929; // Grigio leggermente più scuro dello sfondo per distinzione
+// 🎨 Dark Mode Colors (integrando turchese)
+$dark-bg: #1c1c1c;        // Grigio antracite scuro (sfondo principale)
+$dark-text: #e0e0e0;      // Grigio chiaro per leggibilità
+$dark-accent: #00bcd4;    // Turchese brillante e moderno
+$dark-border: #357a85;    // Turchese profondo per dettagli sottili
+$dark-form-bg: #292929;   // Grigio scuro per maggiore contrasto
+$dark-navbar-bg: #265e68; // Turchese scuro e sofisticato

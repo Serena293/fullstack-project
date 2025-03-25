@@ -15,7 +15,6 @@ const TaskList = ({ tasks, refreshTasks, deleteTask, editTask }) => {
 
   return (
     <div className="task-list-container">
-      <h3>Lista Task</h3>
       <ul className="list-group">
         {tasks.map((task) => (
           <li key={task.taskId} className="list-group-item">

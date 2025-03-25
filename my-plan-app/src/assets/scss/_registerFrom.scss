@@ -1,0 +1,121 @@
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: $light-bg;
+  
+    &.dark {
+      background-color: $dark-bg;
+    }
+  
+    .card {
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: $light-form-bg;
+  
+      .dark & {
+        background-color: $dark-form-bg;
+      }
+  
+      h1 {
+        color: $light-text;
+        text-align: center;
+        margin-bottom: 1.5rem;
+  
+        .dark & {
+          color: $dark-text;
+        }
+      }
+  
+      .form-group {
+        margin-bottom: 1.5rem;
+  
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          color: $light-text;
+  
+          .dark & {
+            color: $dark-text;
+          }
+        }
+  
+        input {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid $light-border;
+          border-radius: 4px;
+          background-color: $light-form-bg;
+          color: $light-text;
+  
+          .dark & {
+            border-color: $dark-border;
+            background-color: $dark-form-bg;
+            color: $dark-text;
+          }
+        }
+  
+        .error-message {
+          color: red;
+          font-size: 0.8rem;
+          margin-top: 0.5rem;
+        }
+      }
+  
+      button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: $light-accent;
+        color: $light-text;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 1rem;
+  
+        &:hover {
+          background-color: darken($light-accent, 10%);
+        }
+  
+        .dark & {
+          background-color: $dark-accent;
+          color: $dark-text;
+  
+          &:hover {
+            background-color: darken($dark-accent, 10%);
+          }
+        }
+      }
+  
+      .login-link {
+        margin-top: 1.5rem;
+        text-align: center;
+  
+        p {
+          color: $light-text;
+  
+          .dark & {
+            color: $dark-text;
+          }
+  
+          a {
+            color: $light-accent;
+            text-decoration: none;
+  
+            .dark & {
+              color: $dark-accent;
+            }
+  
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }

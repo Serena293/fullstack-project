@@ -104,6 +104,7 @@ const CreateTasksForm = ({ refreshTasks }) => {
               name="dueDate"
               value={taskData.dueDate}
               onChange={handleInputChange}
+              min={new Date().toISOString().split('T')[0]}
             />
           </div>
 

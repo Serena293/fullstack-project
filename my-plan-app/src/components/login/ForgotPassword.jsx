@@ -1,9 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 
-export default function ForgotPassword() {
+export default function ForgotPassword({ theme }) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -15,7 +14,6 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post("http://localhost:8080/api/password-reset/request", { email });
-
       if (response.status === 200) {
         setMessage({ type: "success", text: "Check your email for the reset link." });
       } else {
@@ -29,25 +27,20 @@ export default function ForgotPassword() {
   };
 
   return (
-    <section className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
-      <div className="card p-4" style={{ maxWidth: "400px", width: "100%" }}>
-        <h1 className="text-center mb-4">Forgot Password</h1>
-
+    <section className={`forgot-password-container ${theme}`}>
+      <div className="card">
+        <h1>Forgot Password</h1>
         {message && (
-          <div className={`alert ${message.type === "success" ? "alert-success" : "alert-danger"} text-center`}>
+          <div className={`message ${message.type}`}>
             {message.text}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* Email Input */}
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Enter your email
-            </label>
+          <div className="form-group">
+            <label htmlFor="email">Enter your email</label>
             <input
               type="email"
-              className="form-control"
               id="email"
               placeholder="Email address"
               value={email}
@@ -56,18 +49,13 @@ export default function ForgotPassword() {
             />
           </div>
 
-          {/* Submit Button */}
-          <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Sending..." : "Send Reset Link"}
-            </button>
-          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Sending..." : "Send Reset Link"}
+          </button>
         </form>
 
-        <div className="text-center mt-3">
-          <p>
-            Remembered your password? <Link to="/login">Login here</Link>
-          </p>
+        <div className="extra-links">
+          <p>Remembered your password? <Link to="/login">Login here</Link></p>
         </div>
       </div>
     </section>

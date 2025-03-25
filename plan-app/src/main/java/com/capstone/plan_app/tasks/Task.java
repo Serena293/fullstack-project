@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -38,6 +39,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "userId")
     @JsonIgnore
+    @ToString.Exclude
     private AppUsers appUser;
 
 

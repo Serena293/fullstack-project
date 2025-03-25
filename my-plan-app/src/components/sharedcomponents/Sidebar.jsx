@@ -25,7 +25,6 @@ const Sidebar = () => {
         overflowY: "auto",
       }}
     >
-      <h4>Task List</h4>
       <TaskList tasks={tasks} /> 
     </div>
   );
