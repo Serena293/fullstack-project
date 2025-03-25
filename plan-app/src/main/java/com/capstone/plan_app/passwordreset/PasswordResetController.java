@@ -1,4 +1,4 @@
-package passwordreset;
+package com.capstone.plan_app.passwordreset;
 
 import com.capstone.plan_app.security.AuthService;
 import com.capstone.plan_app.services.EmailService;
@@ -15,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/password-reset")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class PasswordResetController {
 
     private final PasswordResetTokenService tokenService;
@@ -23,24 +24,29 @@ public class PasswordResetController {
     private final PasswordEncoder passwordEncoder; // Per criptare la password
 
     @PostMapping("/request")
-    public ResponseEntity<String> requestPasswordReset(@RequestBody Map<String, String> request) throws MessagingException {
+    public ResponseEntity<String> requestPasswordReset(@RequestBody Map<String, String> request) {
+
         String email = request.get("email");
         AppUsers user = userService.findByEmail(email);
 
+        System.out.println("richiesta password rivetvuta per email: " + email + user);
         if (user == null) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
         String token = tokenService.createPasswordResetToken(user);
-
-
         String resetLink = "http://localhost:5173/resetpassword?token=" + token;
 
-        emailService.sendEmail(user.getEmail(), "Password Reset",
-                "Click the link to reset your password: " + resetLink);
+        try {
+            emailService.sendEmail(user.getEmail(), "Password Reset",
+                    "Click the link to reset your password: " + resetLink);
+        } catch (MessagingException e) {
+            return ResponseEntity.status(500).body("Error sending email: " + e.getMessage());
+        }
 
         return ResponseEntity.ok("Password reset email sent.");
     }
+
 
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {

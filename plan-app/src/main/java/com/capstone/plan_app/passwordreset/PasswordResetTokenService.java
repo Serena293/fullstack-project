@@ -1,4 +1,4 @@
-package passwordreset;
+package com.capstone.plan_app.passwordreset;
 
 import com.capstone.plan_app.user.AppUsers;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class PasswordResetTokenService {
 
     private final PasswordResetTokenRepository tokenRepository;
 
-    public String createPasswordResetToken(Long userId) {
+    public String createPasswordResetToken(AppUsers appUsers) {
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = PasswordResetToken.builder()
                 .token(token)

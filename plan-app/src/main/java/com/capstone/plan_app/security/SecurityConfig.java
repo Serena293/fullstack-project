@@ -44,15 +44,19 @@ public class SecurityConfig implements WebMvcConfigurer {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/api/auth/**").permitAll() // ✅ Permetti accesso anonimo a registrazione/login
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ Necessario per richieste CORS
-                        .requestMatchers("/error").permitAll() // ✅ Evita il problema del 403 sugli errori
-                        .requestMatchers("/tasks/user/**").hasAuthority("ROLE_USER") // ✅ Solo utenti autenticati con ROLE_USER
+                        .requestMatchers("/register", "/login", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/password-reset/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/tasks/user/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

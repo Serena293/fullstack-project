@@ -31,11 +31,11 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/reset-password",
-        { token, newPassword: password }
+       "http://localhost:8080/api/password-reset/reset",
+        { token,  password }
       );
 
-      setMessage(response.data.message);
+      setMessage(response.data)
       setError("");
       setTimeout(() => navigate("/login"), 3000);
     } catch (err) {

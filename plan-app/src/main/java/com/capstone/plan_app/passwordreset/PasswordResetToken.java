@@ -1,4 +1,4 @@
-package passwordreset;
+package com.capstone.plan_app.passwordreset;
 
 import com.capstone.plan_app.user.AppUsers;
 import jakarta.persistence.*;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "password_reset_tokens")
 public class PasswordResetToken {
 
     @Id
@@ -22,7 +23,7 @@ public class PasswordResetToken {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private AppUsers user;
+    private AppUsers appUsers;
 
     public boolean isExpired() {
         return expiryDate.isBefore(LocalDateTime.now());

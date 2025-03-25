@@ -38,11 +38,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.debug("Richiesta ricevuta: {}", path);
 
         // Evita di filtrare login e register
-        if (path.equals("/api/auth/login") || path.equals("/api/auth/register") || path.equals("/api/password-reset/request")) {
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/register" )) {
             chain.doFilter(request, response);
             return;
         }
-
 
         String authHeader = request.getHeader("Authorization");
         logger.info("Authorization Header ricevuto: '{}'", authHeader);
