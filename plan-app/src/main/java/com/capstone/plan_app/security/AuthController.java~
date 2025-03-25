@@ -3,6 +3,8 @@ package com.capstone.plan_app.security;
 import com.capstone.plan_app.user.AppUserDTO;
 import com.capstone.plan_app.user.AppUserLoginDTO;
 import com.capstone.plan_app.user.AppUsers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,78 +14,63 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")  // Grouping all auth-related routes under '/api/auth'
+@RequestMapping("/api/auth")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
-    // Inject AuthService
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
-    // Endpoint to register new user
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUserDTO appUserDTO) {
+        logger.debug("Registrazione richiesta per username: {}", appUserDTO.getUsername());
+
         String token = authService.register(appUserDTO).getBody();
+        logger.debug("Token generato per registrazione: {}", token);
 
         if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Token not generated during registration"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Token non generato"));
         }
 
         return ResponseEntity.ok(Map.of("token", token));
     }
 
-    // Endpoint to login and return JWT token
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUserLoginDTO appUserLoginDTO) {
+        logger.debug("Login richiesto per username: {}", appUserLoginDTO.getUsername());
+
         String token = authService.login(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword()).getBody();
+        logger.debug("Token generato dopo login: {}", token);
 
         if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials or token not generated"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Credenziali errate o token non generato"));
         }
 
         return ResponseEntity.ok(Map.of("token", token));
     }
-
-    // Endpoint to get the authenticated user's details
-//    @GetMapping("/me")
-//    public ResponseEntity<?> getCurrentUser() {
-//        // Ottieni l'oggetto di autenticazione dal contesto di sicurezza
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        // Verifica se l'utente è autenticato
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
-//        }
-//
-//        // Ottieni i dettagli dell'utente autenticato
-//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//
-//        // Ottieni l'utente dal CustomUserDetails
-//        AppUsers currentUser = userDetails.getAppUser();
-//
-//        // Restituisci i dettagli dell'utente come risposta
-//        return ResponseEntity.ok(currentUser);
-//    }
-//}
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug("Richiesta informazioni utente autenticato");
 
         if (authentication == null || !authentication.isAuthenticated()) {
+            logger.warn("Utente non autenticato");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
         }
 
         Object principal = authentication.getPrincipal();
-
-        // 🔹 Controlla se il principal è un CustomUserDetails
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
             AppUsers currentUser = userDetails.getAppUser();
+            logger.debug("Utente autenticato: {}", currentUser.getUsername());
             return ResponseEntity.ok(currentUser);
         } else {
+            logger.warn("Principal non valido: {}", principal);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid authentication principal"));
         }
-    }}
+    }
+}
