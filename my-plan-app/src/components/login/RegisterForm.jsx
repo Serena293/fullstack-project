@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom"; // Updated import
-import { Link } from "react-router-dom"; // Import Link component
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   // State hooks for form fields
@@ -18,16 +18,15 @@ const RegisterForm = () => {
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
-  // Hook for redirection (using useNavigate instead of useHistory)
-  const navigate = useNavigate(); // Updated to useNavigate
+  const navigate = useNavigate();
 
   // Set the Authorization header globally for Axios if a token is present in localStorage
-//   useEffect(() => {
-//     const token = localStorage.getItem("authToken");
-//     if (token) {
-//       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-//     }
-//   }, []);
+  //   useEffect(() => {
+  //     const token = localStorage.getItem("authToken");
+  //     if (token) {
+  //       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  //     }
+  //   }, []);
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -57,10 +56,9 @@ const RegisterForm = () => {
     };
 
     try {
-      // Send POST request with Axios to the backend (updated to localhost:8080)
       const response = await axios.post(
         "http://localhost:8080/api/auth/register",
-        userData,
+        userData
         // {
         //   withCredentials: true,
         // }
@@ -84,7 +82,7 @@ const RegisterForm = () => {
       setPasswordError("");
 
       // Redirect to the login page using navigate (updated)
-      navigate("/login"); 
+      navigate("/login");
 
       // Show a success message
       alert("Registration successful! Redirecting to login...");

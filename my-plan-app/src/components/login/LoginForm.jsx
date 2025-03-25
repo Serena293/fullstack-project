@@ -21,7 +21,7 @@ const LoginForm = () => {
         password,
       });
 
-      console.log("Risposta login:", response);
+     // console.log("Risposta login:", response);
 
       // Salva il token rimosso il prefisso "Bearer "
       const token = response.data.token?.trim();
@@ -104,10 +104,15 @@ const LoginForm = () => {
           </div>
         </form>
 
-        {/* Link to Register Form */}
+     
         <div className="text-center mt-3">
           <p>
             Don't have an account? <Link to="/register">Register here</Link>
+          </p>
+        </div>
+        <div className="text-center mt-3">
+          <p>
+             <Link to="/forgotpassword">Forgot password?</Link>
           </p>
         </div>
       </div>

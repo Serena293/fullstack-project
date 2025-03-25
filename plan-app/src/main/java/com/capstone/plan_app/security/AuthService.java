@@ -98,4 +98,23 @@ public class AuthService {
         //return ResponseEntity.ok("Bearer " + jwtToken);
         return ResponseEntity.ok(jwtToken);
     }
+
+
+    // 🔹 Trova un utente per email
+    public AppUsers findByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElse(null); // Oppure puoi lanciare un'eccezione
+    }
+
+    // 🔹 Trova un utente per ID
+    public AppUsers findById(Long id) {
+        return userRepo.findById(id)
+                .orElse(null);
+    }
+
+    // 🔹 Salva l'utente (dopo reset password)
+    public void saveUser(AppUsers user) {
+        userRepo.save(user);
+    }
+
 }

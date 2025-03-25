@@ -1,0 +1,41 @@
+package passwordreset;
+
+import com.capstone.plan_app.user.AppUsers;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class PasswordResetTokenService {
+
+    private final PasswordResetTokenRepository tokenRepository;
+
+    public String createPasswordResetToken(AppUsers appUsers) {
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = PasswordResetToken.builder()
+                .token(token)
+                .appUsers(appUsers)
+                .expiryDate(LocalDateTime.now().plusHours(1)) // Scade in 1 ora
+                .build();
+        tokenRepository.save(passwordResetToken);
+        return token;
+    }
+
+    public Optional<PasswordResetToken> getToken(String token) {
+        return tokenRepository.findByToken(token);
+    }
+
+    public boolean isTokenValid(String token) {
+        return getToken(token)
+                .filter(t -> t.getExpiryDate().isAfter(LocalDateTime.now()))
+                .isPresent();
+    }
+
+    public void deleteToken(String token) {
+        getToken(token).ifPresent(tokenRepository::delete);
+    }
+}
