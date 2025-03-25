@@ -1,0 +1,62 @@
+@import "./colors"; 
+
+.task-item {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.light-mode {
+    background-color: $light-form-bg;
+    color: $light-text;
+    border: 1px solid $light-border;
+  }
+
+  &.dark-mode {
+    background-color: $dark-form-bg;
+    color: $dark-text;
+    border: 1px solid $dark-border;
+  }
+
+  .due-date {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: $light-accent;
+  }
+
+  .task-actions {
+    display: flex;
+    gap: 8px;
+
+    button {
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+/* Stile per la Dark Mode del Modale */
+.dark-mode-modal .modal-content {
+  background-color: $dark-form-bg;
+  color: $dark-text;
+  border: 1px solid $dark-border;
+
+  .modal-header,
+  .modal-footer {
+    border-color: $dark-border;
+  }
+
+  .btn-secondary {
+    background-color: $dark-border;
+    color: $dark-text;
+  }
+
+  .btn-primary {
+    background-color: $dark-accent;
+    border-color: $dark-border;
+  }
+}

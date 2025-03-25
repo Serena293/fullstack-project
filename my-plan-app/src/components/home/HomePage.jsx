@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import CalendarComponent from "../sharedcomponents/CalendarComponet";
 import CreateTasksForm from "./CreateTasksForms";
 import BoardComponent from "./BoardComponent";
@@ -7,10 +7,11 @@ import CustomNavbar from "../sharedcomponents/CustomNavbar";
 import Footer from "../sharedcomponents/Footer";
 import useTasks from "../../hooks/useTasks";
 import useAuth from "../../hooks/useAuth";
-import TaskItem from "../sharedcomponents/TaskItem";
+import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto
 
 const HomePage = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const { darkMode } = useContext(DarkModeContext); // Usa lo stato della dark mode
 
   const { currentUser } = useAuth();
   const { tasks, refreshTasks, error, deleteTask, editTask } = useTasks(
@@ -21,10 +22,10 @@ const HomePage = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
-  if (error) return <p>Errore nel caricamento delle task: {error}</p>;
+  if (error) return <p className="text-danger">Errore nel caricamento delle task: {error}</p>;
 
   return (
-    <section className="container mt-4">
+    <section className={ `container mt-4 ${darkMode ? "dark-mode" : "light-mode"}`}>
       <CustomNavbar toggleSidebar={toggleSidebar} />
       <h1 className="text-center">Home Page</h1>
 

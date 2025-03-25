@@ -1,15 +1,15 @@
 // 🎨 Light Mode Colors
-$light-bg: #f5e1c8;       // Beige caldo (sfondo principale)
-$light-text: #8b5e3b;     // Marrone scuro (testo principale)
-$light-accent: #ffb347;   // Arancio caldo (accenti)
-$light-border: #c9a38d;   // Marrone chiaro per bordi e icone
-$light-form-bg: #fff7ef;  // Sfondo leggermente più chiaro per i form
-$light-navbar-bg: #f0d9c5; // Sfondo chiaro per la navbar
+$light-bg: hsl(40, 100%, 90%);       // Bianco caldo (sfondo principale)
+$light-text: #212529;                // Grigio molto scuro per alta leggibilità
+$light-accent: #FF8800;              // Arancio acceso per evidenziare
+$light-border: #B08968;              // Marrone caldo per dettagli
+$light-form-bg: #ffffff;             // Bianco per maggiore contrasto
+$light-navbar-bg: hsl(40, 100%, 80%); // Beige più scuro, ma simile allo sfondo
 
 // 🎨 Dark Mode Colors
-$dark-bg: #2d1f14;        // Sfondo principale scuro
-$dark-text: #e8d4b9;      // Testo principale chiaro
-$dark-accent: #d98a35;    // Arancio bruciato per accenti
-$dark-border: #6b4e35;    // Marrone medio per bordi e icone
-$dark-form-bg: #3a271a;   // Sfondo leggermente più chiaro per i form
-$dark-navbar-bg: #1e140c; // Sfondo scuro per la navbar
+$dark-bg: #1E1E1E;        // Grigio scuro moderno (meno pesante del nero)
+$dark-text: #D4D4D4;      // Grigio chiaro per miglior leggibilità su fondo scuro
+$dark-accent: #BB86FC;    // Viola soft per un tocco moderno
+$dark-border: #444444;    // Grigio medio per bordi e separatori
+$dark-form-bg: #252525;   // Grigio scuro per contrasto con lo sfondo
+$dark-navbar-bg: #292929; // Grigio leggermente più scuro dello sfondo per distinzione

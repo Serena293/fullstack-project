@@ -46,7 +46,7 @@ const LoginForm = () => {
 
   return (
     <section
-      className={`d-flex justify-content-center align-items-center ${darkMode ? "dark-mode" : "light-mode"}`}
+      className={`d-flex justify-content-center align-items-center vh-100 w-100 ${darkMode ? "dark-mode" : "light-mode"}`}
     >
       <div className="card p-4 login-card">
         <h1 className="text-center mb-4">Login</h1>

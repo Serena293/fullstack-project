@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal"; // Se usi Bootstrap, altrimenti crea un div normale
+import React, { useState, useContext } from "react";
+import Modal from "react-bootstrap/Modal"; 
+import { DarkModeContext } from "../DarkModeContext";
 
 const TaskItem = ({ task, deleteTask, variant, editTask }) => {
   const { taskId, title, description, dueDate } = task;
+  const { darkMode } = useContext(DarkModeContext);
 
   const [updatedTask, setUpdatedTask] = useState({ ...task });
   const [showModal, setShowModal] = useState(false);
@@ -13,11 +15,11 @@ const TaskItem = ({ task, deleteTask, variant, editTask }) => {
 
   const handleEdit = () => {
     editTask(taskId, updatedTask);
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   return (
-    <div className={`task-item ${variant === "post-it" ? "post-it" : "normal-task"}`}>
+    <div className={`task-item ${variant === "post-it" ? "post-it" : "normal-task"} ${darkMode ? "dark-mode" : "light-mode"}`}>
       <h5>{title}</h5>
       <p>{description}</p>
       {dueDate && <p className="due-date">📅 {dueDate}</p>}
@@ -34,7 +36,7 @@ const TaskItem = ({ task, deleteTask, variant, editTask }) => {
         </button>
       </div>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={() => setShowModal(false)} className={darkMode ? "dark-mode-modal" : ""}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica Task</Modal.Title>
         </Modal.Header>

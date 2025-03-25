@@ -1,0 +1,68 @@
+@import "./colors";
+
+.board-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: url("../img/TCom_Wood_Cork_header.jpg") repeat;
+  background-size: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid #9c6b3d;
+}
+
+.post-it-section {
+  text-align: center;
+  padding: 1rem;
+
+  h3 {
+    font-family: "Caveat", cursive;
+    font-size: 1.8rem;
+    color: #5a3825;
+  }
+
+  .post-it-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+}
+
+// 🎨 Stile per i post-it
+.task-item.post-it {
+  background: #fffb94; // Giallo post-it
+  padding: 1rem;
+  width: 200px;
+  min-height: 150px;
+  border-radius: 4px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transform: rotate(-2deg); // Leggera rotazione per effetto naturale
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: rotate(0deg) scale(1.05); // Effetto al passaggio del mouse
+  }
+
+  h5 {
+    font-size: 1.2rem;
+    color: #5a3825;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #3d2b1f;
+  }
+
+  // 🎀 Effetto "angolo piegato"
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  }
+}

@@ -7,7 +7,7 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
   return (
     <div className="board-container">
       <div className="post-it-section">
-        <h3>📝 Post-it</h3>
+       
         <div className="post-it-grid">
           {tasks.length > 0 ? (
             tasks.map((task) => (
@@ -29,4 +29,4 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
   );
 };
 
-export default BoardComponent;
+export default BoardComponent;  

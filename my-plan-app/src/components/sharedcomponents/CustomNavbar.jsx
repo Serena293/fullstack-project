@@ -16,7 +16,7 @@ const CustomNavbar = ({ toggleSidebar }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className={`navbar navbar-expand-lg ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Home
@@ -54,7 +54,7 @@ const CustomNavbar = ({ toggleSidebar }) => {
             {/* Bottone Dark Mode */}
             <li className="nav-item">
               <button
-                className="btn btn-outline-dark ms-2"
+                className="btn toggle-dark-mode"
                 onClick={toggleDarkMode}
               >
                 <i className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}></i>
