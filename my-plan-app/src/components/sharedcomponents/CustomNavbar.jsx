@@ -1,14 +1,17 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { DarkModeContext } from "../DarkModeContext";
 
 const CustomNavbar = ({ toggleSidebar }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { darkMode, setDarkMode } = useContext(DarkModeContext);
+
+  const toggleDarkMode = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
 
   const handleLogout = () => {
-  
     localStorage.removeItem("authToken");
-
-   
     navigate("/login");
   };
 
@@ -44,13 +47,18 @@ const CustomNavbar = ({ toggleSidebar }) => {
               </a>
             </li>
             <li>
-              <a
-                className="nav-link"
-                href="#"
-                onClick={handleLogout} 
-              >
+              <a className="nav-link" href="#" onClick={handleLogout}>
                 Log out
               </a>
+            </li>
+            {/* Bottone Dark Mode */}
+            <li className="nav-item">
+              <button
+                className="btn btn-outline-dark ms-2"
+                onClick={toggleDarkMode}
+              >
+                <i className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}></i>
+              </button>
             </li>
           </ul>
         </div>

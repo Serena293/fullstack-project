@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {jwtDecode} from "jwt-decode"; // Importa jwtDecode per decodificare il token
+import { jwtDecode } from "jwt-decode";
+import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto
 
 const LoginForm = () => {
+  const { darkMode } = useContext(DarkModeContext); // Usa lo stato della dark mode
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,24 +23,14 @@ const LoginForm = () => {
         password,
       });
 
-     // console.log("Risposta login:", response);
-
-      // Salva il token rimosso il prefisso "Bearer "
       const token = response.data.token?.trim();
       localStorage.setItem("authToken", token);
 
-      console.log("Token salvato:", token);
-
-      // Decodifica il token per ottenere i dati dell'utente
       if (token) {
         try {
           const decoded = jwtDecode(token.replace("Bearer ", ""));
-          console.log("Decoded Token:", decoded);
-
-          // Se il token contiene l'ID utente, lo salviamo in localStorage
           if (decoded?.sub) {
             localStorage.setItem("userId", decoded.sub);
-            console.log("User ID salvato:", decoded.sub);
           }
         } catch (error) {
           console.error("Errore nella decodifica del token:", error);
@@ -54,14 +46,12 @@ const LoginForm = () => {
 
   return (
     <section
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
+      className={`d-flex justify-content-center align-items-center ${darkMode ? "dark-mode" : "light-mode"}`}
     >
-      <div className="card p-4" style={{ maxWidth: "400px", width: "100%" }}>
+      <div className="card p-4 login-card">
         <h1 className="text-center mb-4">Login</h1>
 
         <form onSubmit={handleLogin}>
-          {/* Username Input */}
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
               Username
@@ -77,7 +67,6 @@ const LoginForm = () => {
             />
           </div>
 
-          {/* Password Input */}
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
@@ -93,10 +82,8 @@ const LoginForm = () => {
             />
           </div>
 
-          {/* Error Message */}
           {error && <p className="text-danger">{error}</p>}
 
-          {/* Submit Button */}
           <div className="d-grid gap-2">
             <button type="submit" className="btn btn-primary">
               Login
@@ -104,7 +91,6 @@ const LoginForm = () => {
           </div>
         </form>
 
-     
         <div className="text-center mt-3">
           <p>
             Don't have an account? <Link to="/register">Register here</Link>
@@ -112,7 +98,7 @@ const LoginForm = () => {
         </div>
         <div className="text-center mt-3">
           <p>
-             <Link to="/forgotpassword">Forgot password?</Link>
+            <Link to="/forgotpassword">Forgot password?</Link>
           </p>
         </div>
       </div>

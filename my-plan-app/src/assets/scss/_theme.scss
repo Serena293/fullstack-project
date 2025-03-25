@@ -1,0 +1,76 @@
+
+@import "./colors"; 
+
+// 🌙 Dark Mode Styles
+.dark-mode {
+  background-color: $dark-bg;
+  color: $dark-text;
+
+  a {
+    color: $dark-accent;
+    &:hover {
+      color: lighten($dark-accent, 10%);
+    }
+  }
+
+  button, .btn {
+    background-color: $dark-accent;
+    border-color: $dark-border;
+    color: $dark-text;
+    &:hover {
+      background-color: darken($dark-accent, 10%);
+    }
+  }
+
+  .navbar {
+    background-color: $dark-navbar-bg;
+    color: $dark-text;
+  }
+
+  .form-control, .card, .modal-content {
+    background-color: $dark-form-bg;
+    border-color: $dark-border;
+    color: $dark-text;
+  }
+
+  .form-control::placeholder {
+    color: lighten($dark-text, 20%);
+  }
+}
+
+// ☀️ Light Mode Styles (default)
+.light-mode {
+  background-color: $light-bg;
+  color: $light-text;
+
+  a {
+    color: $light-accent;
+    &:hover {
+      color: darken($light-accent, 10%);
+    }
+  }
+
+  button, .btn {
+    background-color: $light-accent;
+    border-color: $light-border;
+    color: $light-text;
+    &:hover {
+      background-color: darken($light-accent, 10%);
+    }
+  }
+
+  .navbar {
+    background-color: $light-navbar-bg;
+    color: $light-text;
+  }
+
+  .form-control, .card, .modal-content {
+    background-color: $light-form-bg;
+    border-color: $light-border;
+    color: $light-text;
+  }
+
+  .form-control::placeholder {
+    color: darken($light-text, 20%);
+  }
+}
