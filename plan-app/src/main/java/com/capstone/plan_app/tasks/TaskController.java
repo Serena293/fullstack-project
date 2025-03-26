@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -131,6 +132,22 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PatchMapping("/{taskId}/completion")
+    public ResponseEntity<TaskDTO> updateTaskCompletion(
+            @PathVariable Long taskId,
+            @RequestBody Map<String, Boolean> requestBody) {  // ✅ Accetta il valore dal body
+        boolean completed = requestBody.getOrDefault("completed", false);
+
+        try {
+            TaskDTO updatedTask = taskService.updateTaskCompletion(taskId, completed);
+            return ResponseEntity.ok(updatedTask);
+        } catch (RuntimeException e) {
+            logger.error("Error updating task completion status: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
     @PutMapping("/{taskId}")
     public ResponseEntity<?> editTask(@PathVariable Long taskId, @Valid @RequestBody Task updatedTask) {

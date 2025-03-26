@@ -15,6 +15,8 @@ const CustomNavbar = ({ toggleSidebar }) => {
     navigate("/login");
   };
 
+
+
   return (
     <nav className={`navbar navbar-expand-lg ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="container-fluid">
@@ -40,6 +42,7 @@ const CustomNavbar = ({ toggleSidebar }) => {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
+                  console.log("apri side bar")
                   toggleSidebar();
                 }}
               >

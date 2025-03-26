@@ -1,103 +1,147 @@
-import { useState, useEffect } from "react";
-import useAuth from "./useAuth";
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
-  const useTasks = () => {
-  const { currentUser } = useAuth();
+const API_URL = 'http://localhost:8080/api/tasks';
+
+const useTasks = (userId) => {
   const [tasks, setTasks] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // 🔄 Recupera le task quando cambia l'utente o viene richiesto un refresh
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        if (!currentUser?.userId) return;
-
-        const token = localStorage.getItem("authToken");
-        const formattedToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
-
-        const response = await fetch(`http://localhost:8080/api/tasks/user/${currentUser.userId}`, {
-          method: "GET",
-          headers: {
-            Authorization: formattedToken,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
-
-        const data = await response.json();
-        setTasks(data);
-        setError(null);
-      } catch (error) {
-        console.error("Errore nel fetch delle task:", error);
-        setError(error.message);
-      }
-    };
-
-    fetchTasks();
-  }, [currentUser, refresh]);
-
-
-  const refreshTasks = () => setRefresh((prev) => !prev);
-
-  
-  const deleteTask = async (taskId) => {
-    try {
-      const token = localStorage.getItem("authToken");
-      const formattedToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
-
-      const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
-        method: "DELETE",
-        headers: { Authorization: formattedToken,
-          "Content-Type": "application/json"
-         },
-        
-      });
-
-      if (!response.ok) throw new Error("Errore nell'eliminazione della task");
-
-     // console.log(`✅ Task ${taskId} eliminata con successo`);
-      //setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== taskId));
-      refreshTasks();
-    } catch (error) {
-      console.error("Errore nella cancellazione della task:", error);
-    }
+  // Funzione per ottenere il token
+  const getAuthToken = () => {
+    const token = localStorage.getItem('authToken');
+    return token ? `Bearer ${token.replace('Bearer ', '')}` : null;
   };
 
-  // ✏️ Funzione per modificare una task
-const editTask = async (taskId, updatedTask) => {
-  console.log("📌 Task ID ricevuto:", taskId);
-  console.log("📌 Updated Task ricevuta:", updatedTask);
+  // Fetch delle task
+  const fetchTasks = useCallback(async () => {
+    if (!userId) return;
+    const token = getAuthToken();
+    if (!token) {
+      setError("Utente non autenticato.");
+      return;
+    }
+    try {
+      setLoading(true);
+      const response = await axios.get(API_URL, { headers: { Authorization: token } });
+      setTasks(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.message || "Errore nel recupero delle task.");
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
 
-  if (!updatedTask) {
-    console.error("❌ Errore: updatedTask è undefined!");
-    return;
-  }
-  try {
-    const token = localStorage.getItem("authToken");
-    const formattedToken = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+  // Eliminazione task
+  const deleteTask = useCallback(async (taskId) => {
+    const token = getAuthToken();
+    if (!token) return;
+    try {
+      await axios.delete(`${API_URL}/${taskId}`, { headers: { Authorization: token } });
+      await fetchTasks();
+    } catch (err) {
+      setError(err.response?.data?.message || "Errore nell'eliminazione della task.");
+    }
+  }, [fetchTasks]);
 
-    const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
-      method: "PUT",
-      headers: {
-        Authorization: formattedToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedTask),
-     
-    });
- console.log(updatedTask)
-    if (!response.ok) throw new Error("Errore nella modifica della task");
+  // Modifica task
+  const editTask = useCallback(async (taskId, updatedTask) => {
+    const token = getAuthToken();
+    if (!token) return;
+    try {
+      await axios.put(`${API_URL}/${taskId}`, updatedTask, { headers: { Authorization: token } });
+      await fetchTasks();
+    } catch (err) {
+      setError(err.response?.data?.message || "Errore nella modifica della task.");
+    }
+  }, [fetchTasks]);
 
-    refreshTasks(); 
-  } catch (error) {
-    console.error("Errore nella modifica della task:", error);
-  }
+  // Toggle completamento task (optimistic update)
+  // const toggleTaskCompletion = useCallback(async (taskId, completed) => {
+  //   console.log(`🔄 Toggle completamento: Task ${taskId} -> ${completed}`);
+  
+  //   try {
+  //     setTasks(prev => prev.map(task => 
+  //       task.taskId === taskId ? { ...task, completed } : task
+  //     ));
+  
+  //     const token = getAuthToken();
+  //     console.log("📡 Inviando PATCH a:", `${API_URL}/${taskId}/completion`);
+  //     console.log("📤 Headers:", { Authorization: token });
+  //     console.log("📤 Params:", { completed });
+  
+  //     const response = await axios.patch(
+  //       `${API_URL}/${taskId}/completion`,
+  //       { completed },  // 👈 Passiamo il dato nel body
+  //       {
+  //         headers: { Authorization: token }
+  //       }
+  //     );
+      
+  
+  //     console.log("✅ Risposta dal server:", response.data);
+  //    fetchTasks(); // Ricarica le task dopo il completamento
+  //   } catch (err) {
+  //     console.error("❌ Errore nella richiesta PATCH:", err);
+  //     setTasks(prev => prev.map(task => 
+  //       task.taskId === taskId ? { ...task, completed: !completed } : task
+  //     ));
+  //     setError(err.response?.data?.message || "Errore nel completamento della task.");
+  //   }
+  // }, [fetchTasks]);
+
+  const toggleTaskCompletion = useCallback(async (taskId, currentCompleted) => {
+    const newCompleted = !currentCompleted; // Inverti lo stato localmente
+    
+    try {
+          setTasks(prev => prev.map(task => 
+        task.taskId === taskId ? { ...task, completed: newCompleted } : task
+      ));
+  
+      const token = getAuthToken();
+      if (!token) return;
+  
+      await axios.patch(
+        `${API_URL}/${taskId}/completion`,
+        { completed: newCompleted }, // Passa il nuovo stato
+        { headers: { Authorization: token } }
+      );
+  
+    
+    } catch (err) {
+      // Revert in caso di errore
+      setTasks(prev => prev.map(task => 
+        task.taskId === taskId ? { ...task, completed: currentCompleted } : task
+      ));
+      setError(err.response?.data?.message || "Errore nel completamento della task.");
+    }
+  }, []); 
+  
+
+  // Reset dell'errore dopo 5 secondi
+  // useEffect(() => {
+  //   if (error) {
+  //     const timer = setTimeout(() => setError(null), 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [error]);
+
+  // Fetch delle task quando cambia l'utente
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks, userId]);
+
+  return {
+    tasks,
+    loading,
+    error,
+    refreshTasks: fetchTasks, // Permette a HomePage di aggiornare le task
+    deleteTask,
+    editTask,
+    toggleTaskCompletion
+  };
 };
 
-
-  return { tasks, refreshTasks, deleteTask, editTask, error };
-};
-
-export default useTasks
+export default useTasks;

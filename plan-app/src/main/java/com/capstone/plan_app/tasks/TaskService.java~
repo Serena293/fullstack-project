@@ -93,27 +93,24 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    // Aggiungi questo metodo al TaskService
     @Transactional
     public TaskDTO updateTaskCompletion(Long taskId, boolean completed) {
         AppUsers user = getAuthenticatedUser();
 
-        System.out.println("🔄 Prima dell'update: Task " + taskId + " stato -> " + completed);
-
+        // Aggiorna lo stato direttamente nel database
         int updatedRows = taskRepository.updateCompletedStatus(taskId, user.getUserId(), completed);
-        System.out.println("✅ Righe aggiornate: " + updatedRows);
 
         if (updatedRows == 0) {
-            throw new RuntimeException("⚠️ Task non trovata o non autorizzata!");
+            throw new RuntimeException("Task not found or not authorized");
         }
 
+        // Recupera la task aggiornata
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("❌ Task non trovata dopo l'update!"));
-
-        System.out.println("🔁 Dopo l'update nel DB: " + task.isCompleted());
+                .orElseThrow(() -> new RuntimeException("Task not found"));
 
         return convertToDto(task);
     }
-
 
     private TaskDTO convertToDto(Task task) {
         return new TaskDTO(

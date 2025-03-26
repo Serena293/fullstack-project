@@ -22,6 +22,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   @Query("SELECT t FROM Task t WHERE t.taskId = :taskId AND t.appUser.userId = :userId")
   Optional<Task> findByTaskIdAndUserId(@Param("taskId") Long taskId, @Param("userId") Long userId);
 
-
+  @Modifying
+  @Query("UPDATE Task t SET t.completed = :completed WHERE t.taskId = :taskId AND t.appUser.userId = :userId")
+  int updateCompletedStatus(@Param("taskId") Long taskId,
+                            @Param("userId") Long userId,
+                            @Param("completed") boolean completed);
 
 }

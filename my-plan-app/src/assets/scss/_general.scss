@@ -6,3 +6,58 @@ body,
   height: 100%;
   width: 100%;
 }
+
+
+/* Modal Light Mode */
+.light-mode-modal {
+  background-color: $light-form-bg;
+  color: $light-text;
+}
+
+.light-mode-modal .modal-header {
+  background-color: $light-navbar-bg;
+  color: $light-text;
+}
+
+.light-mode-modal .modal-footer {
+  background-color: $light-border;
+}
+
+/* Modal Dark Mode */
+.dark-mode-modal {
+  background-color: $dark-form-bg;
+  color: $dark-text;
+}
+
+.dark-mode-modal .modal-header {
+  background-color: $dark-navbar-bg;
+  color: $dark-text;
+}
+
+.dark-mode-modal .modal-footer {
+  background-color: $dark-border;
+}
+
+
+/* Background trasparente per il backdrop del modale */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important; // Sfondo semi-trasparente
+}
+
+/* Stile per il contenuto del modale in light mode */
+.light-mode-modal .modal-content {
+  background-color: rgba(255, 255, 255, 0.9); // Sfondo bianco leggermente trasparente
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Stile per il contenuto del modale in dark mode */
+.dark-mode-modal .modal-content {
+  background-color: rgba(28, 28, 28, 0.9); // Sfondo scuro con trasparenza
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+/* Rimuove il bordo bianco attorno al modale */
+.modal-content {
+  border: none;
+}

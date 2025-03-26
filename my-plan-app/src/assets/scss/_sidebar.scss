@@ -1,57 +1,72 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: var(--bg-color); 
-}
-
-#root {
-  height: 100%;
-  background-color: inherit; 
-}
-
-// 🎨 Definizione dei temi
-.light-mode {
-  --bg-color: hsl(40, 100%, 90%); 
-}
-
-.dark-mode {
-  --bg-color: #1E1E1E;  
-}
-
-// 📝 Sidebar task list
+/* 📌 Sidebar - Task List */
 .task-list-sidebar {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 300px;
+  right: -350px; /* Sidebar nascosta inizialmente */
+  width: 350px;
   height: 100%;
-  background-color: var(--bg-color); 
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 247, 236, 0.85); /* Light mode con trasparenza */
+  backdrop-filter: blur(10px); /* Effetto sfocatura */
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
   padding: 20px;
   z-index: 1000;
-  transition: transform 0.3s ease;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  border-left: 3px solid $light-border;
+}
 
-  h2 {
-    margin-bottom: 20px;
+/* 🎨 Modalità scura */
+.task-list-sidebar.dark-mode {
+  background-color: rgba(28, 28, 28, 0.85);
+  border-left: 3px solid $dark-border;
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Sidebar visibile */
+.task-list-sidebar.show {
+  right: 0;
+}
+
+/* 🔘 Header della sidebar */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* ❌ Pulsante di chiusura */
+.close-sidebar-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: $light-text;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+    color: darken($light-text, 15%);
+  }
+}
+
+/* 🎨 Modalità scura */
+.dark-mode .close-sidebar-btn {
+  color: $dark-text;
+
+  &:hover {
+    color: lighten($dark-text, 15%);
+  }
+}
+
+/* 📱 Mobile: sidebar a schermo intero */
+@media (max-width: 768px) {
+  .task-list-sidebar {
+    width: 100%;
+    right: -100%;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      margin-bottom: 10px;
-
-      h5 {
-        margin: 0;
-        font-size: 16px;
-      }
-
-      p {
-        font-size: 14px;
-        color: #555;
-      }
-    }
+  .task-list-sidebar.show {
+    right: 0;
   }
 }

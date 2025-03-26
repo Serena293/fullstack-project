@@ -1,0 +1,85 @@
+/* Reset e Body */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--bg-color);
+}
+
+#root {
+  height: 100%;
+  background-color: inherit;
+}
+
+/* 🎨 Definizione dei temi */
+.light-mode {
+  --bg-color: hsl(40, 100%, 90%);
+}
+
+.dark-mode {
+  --bg-color: #1E1E1E;
+}
+
+/* 📝 Task Items */
+.task-item.completed {
+  position: relative;
+  opacity: 0.8;
+}
+
+.task-item.completed::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #28a745;
+}
+
+.dark-mode .task-item.completed {
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.light-mode .task-item.completed {
+  background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* 🏠 Home Page Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--light-bg);
+}
+
+.dark-mode .app-container {
+  background-color: var(--dark-bg);
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  margin-top: 4rem;
+}
+
+.task-management-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: var(--light-text);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--light-accent);
+}
+
+.dark-mode .section-title {
+  color: var(--dark-text);
+  border-bottom-color: var(--dark-accent);
+}
+
+@media (max-width: 768px) {
+  .task-management-section {
+    flex-direction: column;
+  }
+}

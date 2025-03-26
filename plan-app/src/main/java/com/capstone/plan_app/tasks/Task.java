@@ -30,7 +30,6 @@ public class Task {
     private String description;
 
     @FutureOrPresent(message = "Due date must be in the future or present")
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
@@ -42,6 +41,7 @@ public class Task {
     @ToString.Exclude
     private AppUsers appUser;
 
+    private boolean completed = false;
 
     public Task(String title, String description, LocalDate dueDate, boolean isItPostIt) {
         this.title = title;

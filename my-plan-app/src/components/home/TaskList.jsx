@@ -1,33 +1,35 @@
-import React, { useEffect } from "react";
 import TaskItem from "../sharedcomponents/TaskItem";
+import React from "react";
+import useTasks from "../../hooks/useTasks";
+import useAuth from "../../hooks/useAuth";
 
-const TaskList = ({ tasks, refreshTasks, deleteTask, editTask }) => {
-  // console.log(" TaskList ricevuta tasks:", tasks);
+const TaskList = () => {
+  const { currentUser } = useAuth();
+  const { tasks, deleteTask, editTask, toggleTaskCompletion, refreshTasks, loading, error } = useTasks(currentUser?.userId);
 
-  useEffect(() => {
-    console.log("📌 useEffect: Tasks aggiornate in TaskList:", tasks);
-  }, [tasks]);
+  // 🔍 Log per debug
+  console.log("📥 Task in TaskList:", tasks);
 
-  if (!tasks || tasks.length === 0) {
-    //  console.log(" Nessuna task da mostrare!");
-    return <p>Nessuna task disponibile.</p>;
-  }
+  if (loading) return <p>⏳ Caricamento in corso...</p>;
+  if (error) return <p className="text-danger">❌ Errore nel caricamento delle task: {error}</p>;
 
   return (
-    <div className="task-list-container">
-      <ul className="list-group">
-        {tasks.map((task) => (
-          <li key={task.taskId} className="list-group-item">
-            <TaskItem
-              task={task}
-              refreshTasks={refreshTasks}
-              variant="regular"
-              deleteTask={deleteTask}
-              editTask={editTask}
-            />
-          </li>
-        ))}
-      </ul>
+    <div className="task-list">
+      {tasks && tasks.length > 0 ? (
+        tasks.map(task => (
+          <TaskItem
+            key={task.taskId}
+            task={task}
+            refreshTasks={refreshTasks} // ✅ Aggiunto per coerenza con BoardComponent
+            deleteTask={deleteTask}
+            editTask={editTask}
+            toggleTaskCompletion={toggleTaskCompletion} // ✅ Aggiunto
+            variant="normal"
+          />
+        ))
+      ) : (
+        <p>📌 Nessuna task disponibile.</p>
+      )}
     </div>
   );
 };

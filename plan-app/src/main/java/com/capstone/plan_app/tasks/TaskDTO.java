@@ -19,6 +19,7 @@ public class TaskDTO {
     private Long taskId;
     private String title;
     private String description;
+    private boolean completed;
 
     @FutureOrPresent(message = "Due date must be in the future or present")
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -49,6 +50,17 @@ public class TaskDTO {
         this.dueDate = dueDate;
         this.isItPostIt = isItPostIt != null ? isItPostIt : false;
 
+    }
+
+    public TaskDTO(Long taskId, String title, String description,
+                   LocalDate dueDate, boolean isItPostIt, boolean completed) {
+        this.taskId = taskId;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.isItPostIt = isItPostIt;
+
+        this.completed = completed;
     }
 
     public String getDueDateFormatted() {

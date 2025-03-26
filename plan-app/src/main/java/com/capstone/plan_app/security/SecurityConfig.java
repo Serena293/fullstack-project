@@ -33,7 +33,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5174", "http://localhost:5173") // Assicurati che corrisponda agli URL del frontend
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
@@ -47,7 +47,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/register", "/login", "/api/auth/**").permitAll()
                         .requestMatchers("/api/password-reset/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-
+                        .requestMatchers(HttpMethod.PATCH, "/api/tasks/*/completion").authenticated()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/tasks/user/**").hasAuthority("ROLE_USER")

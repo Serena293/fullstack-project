@@ -1,15 +1,11 @@
 import TaskItem from "../sharedcomponents/TaskItem.jsx";
 
-
-const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
-  if (!tasks) return <p>⏳ Caricamento task...</p>;
-
+const BoardComponent = ({ tasks, refreshTasks, deleteTask, editTask, toggleTaskCompletion }) => {
   return (
     <div className="board-container">
       <div className="post-it-section">
-       
         <div className="post-it-grid">
-          {tasks.length > 0 ? (
+          {tasks && tasks.length > 0 ? (
             tasks.map((task) => (
               <TaskItem
                 key={task.taskId}
@@ -18,10 +14,11 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
                 variant="post-it"
                 deleteTask={deleteTask}
                 editTask={editTask}
+                toggleTaskCompletion={toggleTaskCompletion} // ✅ Aggiunto
               />
             ))
           ) : (
-            <p>Nessun Post-it disponibile.</p>
+            <p>📌 Nessun Post-it disponibile.</p>
           )}
         </div>
       </div>
@@ -29,4 +26,4 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask,editTask }) => {
   );
 };
 
-export default BoardComponent;  
+export default BoardComponent;
