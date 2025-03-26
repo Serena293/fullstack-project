@@ -22,7 +22,7 @@ const CustomNavbar = ({ toggleSidebar }) => {
       }`}
     >
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/home">
           Home
         </Link>
         <button
