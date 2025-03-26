@@ -15,10 +15,12 @@ const CustomNavbar = ({ toggleSidebar }) => {
     navigate("/login");
   };
 
-
-
   return (
-    <nav className={`navbar navbar-expand-lg ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <nav
+      className={`navbar navbar-expand-lg ${
+        darkMode ? "dark-mode" : "light-mode"
+      }`}
+    >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Home
@@ -35,32 +37,55 @@ const CustomNavbar = ({ toggleSidebar }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a
-                className="nav-link active"
+                className="nav-link"
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("apri side bar")
                   toggleSidebar();
                 }}
               >
                 Task List
               </a>
             </li>
-            <li>
-              <a className="nav-link" href="#" onClick={handleLogout}>
-                Log out
-              </a>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/profile">
+                Profile
+              </Link>
             </li>
-            {/* Bottone Dark Mode */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="moreDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                More
+              </a>
+              <ul
+                className="dropdown-menu dropdown-menu-end"
+                aria-labelledby="moreDropdown"
+              >
+                <li>
+                  <a className="dropdown-item" href="#" onClick={handleLogout}>
+                    Log out
+                  </a>
+                </li>
+              </ul>
+            </li>
             <li className="nav-item">
               <button
-                className="btn toggle-dark-mode"
+                className="btn btn-outline-secondary ms-2"
                 onClick={toggleDarkMode}
               >
-                <i className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}></i>
+                <i
+                  className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}
+                ></i>
               </button>
             </li>
           </ul>
