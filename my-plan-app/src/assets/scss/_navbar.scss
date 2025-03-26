@@ -1,0 +1,61 @@
+/* Stile generale della navbar */
+.navbar {
+    padding: 1rem;
+    background-color: var(--light-navbar-bg);
+  }
+  
+  .dark-mode .navbar {
+    background-color: var(--dark-navbar-bg);
+  }
+  
+  /* Stile dei link nella navbar */
+  .navbar-nav .nav-link {
+    color: var(--light-text);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .dark-mode .navbar-nav .nav-link {
+    color: var(--dark-text);
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: var(--light-accent);
+  }
+  
+  .dark-mode .navbar-nav .nav-link:hover {
+    color: var(--dark-accent);
+  }
+  
+  /* Rimuove la sottolineatura dei link */
+  .navbar-nav .nav-link {
+    text-decoration: none !important;
+  }
+  
+  /* Bottone per la modalità scura */
+  .btn-dark-mode {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--light-text);
+    cursor: pointer;
+  }
+  
+  .dark-mode .btn-dark-mode {
+    color: var(--dark-text);
+  }
+  
+  .btn-dark-mode:hover {
+    color: var(--light-accent);
+  }
+  
+  .dark-mode .btn-dark-mode:hover {
+    color: var(--dark-accent);
+  }
+  
+  /* Aggiunge spaziatura tra gli elementi */
+  .navbar-nav .nav-item {
+    margin-right: 10px;
+  }
+  
