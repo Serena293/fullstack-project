@@ -32,7 +32,7 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody AppUserDTO appUserDTO) {
         logger.debug("Registrazione richiesta per username: {}", appUserDTO.getUsername());
 
-        String token = (String) authService.register(appUserDTO).getBody();
+        String token = authService.register(appUserDTO).getBody();
         logger.debug("Token generato per registrazione: {}", token);
 
         if (token == null || token.isEmpty()) {

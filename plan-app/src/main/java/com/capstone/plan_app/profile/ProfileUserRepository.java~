@@ -1,0 +1,15 @@
+package com.capstone.plan_app.profile;
+
+import com.capstone.plan_app.user.AppUsers;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProfileUserRepository extends JpaRepository<ProfileUser, Long> {
+
+    @EntityGraph(attributePaths = {"appUser"})
+    ProfileUser findByAppUser(AppUsers appUser);
+
+    ProfileUser findByAppUser_UserId(Long userId);
+}

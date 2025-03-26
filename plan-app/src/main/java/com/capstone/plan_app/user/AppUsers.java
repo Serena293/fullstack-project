@@ -1,6 +1,7 @@
 package com.capstone.plan_app.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.capstone.plan_app.profile.ProfileUser;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +34,6 @@ public class AppUsers {
     @Column(nullable = false)
     private String password;
 
-   @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-   private List<Task> tasks;
-
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Task> tasks;
 }

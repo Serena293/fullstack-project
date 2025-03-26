@@ -22,5 +22,4 @@ public class AppUserDTO {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    // Getters and Setters
 }

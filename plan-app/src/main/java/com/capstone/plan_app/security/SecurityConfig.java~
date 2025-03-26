@@ -47,7 +47,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/register", "/login", "/api/auth/**").permitAll()
                         .requestMatchers("/api/password-reset/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-
+                        .requestMatchers(HttpMethod.PATCH, "/api/tasks/*/completion").authenticated()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/tasks/user/**").hasAuthority("ROLE_USER")
