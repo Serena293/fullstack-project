@@ -61,3 +61,99 @@ body,
 .modal-content {
   border: none;
 }
+
+
+// contatti
+
+/* Aggiungi una classe per centralizzare i componenti */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Centralizzare il form e dare più spazio */
+.add-contact-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.add-contact-form-container form {
+  background-color: $light-form-bg;  // Puoi usare il colore in base alla modalità
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;  // Limita la larghezza massima del form
+}
+
+/* Aggiungi il padding per i bordi e un margine tra i contatti */
+.contact-list-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $light-form-bg;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item {
+  padding: 15px;
+  margin: 10px 0;
+  background-color: $light-bg;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item button {
+  background-color: $light-accent;
+  color: $light-text;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.contact-item button:hover {
+  background-color: darken($light-accent, 10%);
+}
+
+/* In modalità scura, cambia il colore di sfondo */
+.dark-mode .add-contact-form-container form {
+  background-color: $dark-form-bg;
+  color: $dark-text;
+}
+
+.dark-mode .contact-list-container {
+  background-color: $dark-form-bg;
+}
+
+.dark-mode .contact-item {
+  background-color: $dark-bg;
+  color: $dark-text;
+}
+
+.dark-mode .contact-item button {
+  background-color: $dark-accent;
+  color: $dark-text;
+}
+
+.dark-mode .contact-item button:hover {
+  background-color: darken($dark-accent, 10%);
+}
+
+/* Modifica il padding, margine e aspetto del footer */
+footer {
+  padding: 20px;
+  background-color: $light-navbar-bg; // Puoi cambiare il colore in base alla modalità
+  text-align: center;
+  margin-top: 30px;
+}
+
+.dark-mode footer {
+  background-color: $dark-navbar-bg;
+}

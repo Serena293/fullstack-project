@@ -36,4 +36,14 @@ public class AppUsers {
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> tasks;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_contacts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    @JsonManagedReference
+    private List<AppUsers> contacts;
 }

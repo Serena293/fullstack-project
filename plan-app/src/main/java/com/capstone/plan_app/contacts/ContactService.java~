@@ -1,40 +1,48 @@
 package com.capstone.plan_app.contacts;
 
 import com.capstone.plan_app.user.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.capstone.plan_app.user.AppUsers;
+import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ContactService {
+    private final AppUserRepository appUserRepository;
 
-    @Autowired
-    private ContactRepository contactRepository;
-
-    @Autowired
-    private AppUserRepository userRepository;
-
-
-
-    public void addContact(AppUsers currentUser, String username) {
-        AppUsers contactUser = userRepository.findByUsername(username);
-        if (contactUser != null && !contactUser.equals(currentUser)) {
-            Contact contact = new Contact();
-            contact.setAppUser(currentUser);
-            contact.setContactUser(contactUser);
-            contactRepository.save(contact);
-        } else {
-            throw new RuntimeException("Utente non valido o contatto già esistente");
-        }
+    public ContactService(AppUserRepository appUserRepository) {
+        this.appUserRepository = appUserRepository;
     }
 
-    public List<AppUsers> getContacts(AppUsers currentUser) {
-        List<Contact> contacts = contactRepository.findByAppUser(currentUser);
-        return contacts.stream()
-                .map(Contact::getContactUser)
-                .collect(Collectors.toList());
+    public void addContactByUsername(Long userId, String contactUsername) throws Exception {
+        // Trova l'utente principale
+        AppUsers user = appUserRepository.findById(userId)
+                .orElseThrow(() -> new Exception("Utente non trovato"));
+
+        // Trova l'utente da aggiungere come contatto tramite username
+        AppUsers contact = appUserRepository.findByUsername(contactUsername)
+                .orElseThrow(() -> new Exception("Utente con username '" + contactUsername + "' non trovato"));
+
+        // Evita auto-aggiunta
+        if (user.getUserId().equals(contact.getUserId())) {
+            throw new Exception("Non puoi aggiungere te stesso come contatto");
+        }
+
+        // Verifica se il contatto esiste già
+        if (user.getContacts().stream()
+                .anyMatch(c -> c.getUserId().equals(contact.getUserId()))) {
+            throw new Exception("Questo utente è già nella tua lista contatti");
+        }
+
+        // Aggiungi il contatto
+        user.getContacts().add(contact);
+        appUserRepository.save(user);
+    }
+
+    public List<AppUsers> getContacts(Long userId) {
+        return appUserRepository.findById(userId)
+                .map(AppUsers::getContacts)
+                .orElse(Collections.emptyList());
     }
 }

@@ -16,6 +16,10 @@ public class Contact {
     private Long contactId;
 
     @ManyToOne
+    @JoinColumn(name = "contact_user_id", nullable = false)
+    private AppUsers contactUser; //contatti aggiunti
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private AppUsers appUser;
+    private AppUsers appUser; //USER registrato che può aggiungere altri contatti
 }

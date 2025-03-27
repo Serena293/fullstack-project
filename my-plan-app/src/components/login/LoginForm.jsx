@@ -4,10 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto
+import { DarkModeContext } from "../DarkModeContext";
 
 const LoginForm = () => {
-  const { darkMode } = useContext(DarkModeContext); // Usa lo stato della dark mode
+  const { darkMode } = useContext(DarkModeContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

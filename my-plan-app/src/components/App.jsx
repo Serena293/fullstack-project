@@ -13,6 +13,8 @@ import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
 import {DarkModeProvider } from "./DarkModeProvider";
 import ProfilePage from "./profile/ProfilePage"
+import ContactsComponent from "../components/contacts/ContactsComponent"
+
 import "../assets/scss/custom.scss";
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/profile" element={<ProfilePage/>}/>
+        <Route path="/contacts" element={<ContactsComponent/>}/>
       </Routes>
     </DarkModeProvider>
   );
