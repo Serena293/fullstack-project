@@ -8,14 +8,16 @@ import {
 import LoginPage from "./login/LoginPage";
 import RegisterForm from "./login/RegisterForm";
 import HomePage from "./home/HomePage";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import ForgotPassword from "./login/ForgotPassword";
 import ResetPassword from "./login/ResetPassword";
 import {DarkModeProvider } from "./DarkModeProvider";
 import ProfilePage from "./profile/ProfilePage"
 import ContactsComponent from "../components/contacts/ContactsComponent"
+import ChatPage from "../components/chat/ChatPage";
 
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "../assets/scss/custom.scss";
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/contacts" element={<ContactsComponent/>}/>
+        <Route path="/chat" element={<ChatPage/>}/>
       </Routes>
     </DarkModeProvider>
   );

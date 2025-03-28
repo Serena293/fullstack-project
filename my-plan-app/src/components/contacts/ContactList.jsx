@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import useAuth from "../../hooks/useAuth";
 import ContactItem from "./ContactItem"; 
-import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto per dark mode
+import { DarkModeContext } from "../DarkModeContext";
 
 const ContactList = ({ onChat, refreshContacts }) => {
   const { currentUser } = useAuth();
-  const { darkMode } = useContext(DarkModeContext); // Usa il contesto per ottenere la modalità
+  const { darkMode } = useContext(DarkModeContext);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ const ContactList = ({ onChat, refreshContacts }) => {
     };
 
     fetchContacts();
-  }, [currentUser, refreshContacts]); // Refresh dei contatti ogni volta che refreshContacts cambia
+  }, [currentUser, refreshContacts]);
 
   const handleDelete = async (contact) => {
     if (!currentUser) return;
@@ -51,7 +51,7 @@ const ContactList = ({ onChat, refreshContacts }) => {
       );
       if (!response.ok) throw new Error("Errore nella rimozione del contatto");
       setContacts((prev) => prev.filter((c) => c.username !== contact.username));
-      if (refreshContacts) refreshContacts(); // Ricarica la lista dei contatti dopo la rimozione
+      if (refreshContacts) refreshContacts();
     } catch (err) {
       console.error(err.message);
     }
@@ -60,9 +60,13 @@ const ContactList = ({ onChat, refreshContacts }) => {
   return (
     <div className={`container ${darkMode ? "dark-mode" : "light-mode"}`}>
       <h2 className="my-4 text-center">Contact's list</h2>
+
       {loading && <p>Caricamento...</p>}
-      {error && <p className="text-danger">{error}</p>}
-      {contacts.length === 0 && !loading && <p className="text-center">Nessun contatto trovato</p>}
+      {error && <div className="alert alert-danger">{error}</div>}
+      {contacts.length === 0 && !loading && (
+        <p className="text-center">Nessun contatto trovato</p>
+      )}
+      
       <div className="list-group">
         {contacts.map((contact) => (
           <ContactItem

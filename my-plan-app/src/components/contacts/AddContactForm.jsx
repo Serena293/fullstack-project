@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import useAuth from "../../hooks/useAuth";
+import { FaUserPlus } from "react-icons/fa"; 
+import useAuth from "../../hooks/useAuth"
 
 const AddContactForm = ({ onContactAdded }) => {
   const { currentUser } = useAuth();
@@ -24,12 +25,13 @@ const AddContactForm = ({ onContactAdded }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ username }),
+          body: JSON.stringify({ username: username }),
         }
       );
-
+      console.log("Status:", response.status);
       const result = await response.text();
       if (!response.ok) {
+            
         throw new Error(result);
       }
 
@@ -43,18 +45,24 @@ const AddContactForm = ({ onContactAdded }) => {
   };
 
   return (
-    <form onSubmit={handleAddContact}>
+    <form onSubmit={handleAddContact} className="d-flex flex-column gap-3" style={{ width: '300px', margin: 'auto' }}>
       <input
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        placeholder="Inserisci username"
+        placeholder="Seach username"
         required
+        className="form-control"
       />
-      <button type="submit" disabled={loading}>
-        {loading ? "Aggiungendo..." : "Aggiungi Contatto"}
+      <button 
+        type="submit" 
+        disabled={loading} 
+        className={`btn btn-primary d-flex align-items-center justify-content-center ${loading ? "disabled" : ""}`}
+      >
+        <FaUserPlus className="me-2" />
+        {loading ? "Adding contacts..." : "Add Contact"}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
     </form>
   );
 };

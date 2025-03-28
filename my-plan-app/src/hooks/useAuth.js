@@ -27,13 +27,12 @@ const useAuth = () => {
 
       try {
         const decodedToken = JSON.parse(atob(data.token.split(".")[1]));
-        console.log("Token decodificato:", decodedToken);
+        //console.log("Token decodificato:", decodedToken);
 
         if (!decodedToken.userId) {
           throw new Error("userId non trovato nel token");
         }
 
-        // ✅ Assicuriamoci di prendere `userId`, non `sub`
         setCurrentUser({ 
           userId: decodedToken.userId, 
           username: decodedToken.username 
@@ -75,7 +74,7 @@ const useAuth = () => {
 
         try {
           const decodedToken = JSON.parse(atob(token.split(".")[1]));
-          console.log("Token decodificato:", decodedToken);
+         // console.log("Token decodificato:", decodedToken);
 
           if (!decodedToken.userId) {
             throw new Error("userId non trovato nel token");

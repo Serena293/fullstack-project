@@ -4,6 +4,12 @@ logging.level.root=info
 #logging.level.org.springframework=DEBUG
 
 management.endpoints.web.exposure.include=*
+spring.jpa.properties.hibernate.jdbc.batch_size=10
+spring.jpa.properties.hibernate.order_inserts=true
+spring.jpa.properties.hibernate.order_updates=true
+
+spring.jackson.stream-write-constraints.max-nesting-depth=2000
+
 management.endpoint.health.show-details=always
 management.endpoint.mappings.enabled=true
 
@@ -11,7 +17,7 @@ spring.output.ansi.enabled=always
 logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} %clr(%-5level){faint} [%thread] %clr(%logger{36}){cyan} - %clr(%msg){green}%n
 
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.default_schema=public
 
