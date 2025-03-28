@@ -11,7 +11,7 @@ const ContactsComponent = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { darkMode } = useContext(DarkModeContext); // Ottieni lo stato della dark mode dal contesto
+  const { darkMode } = useContext(DarkModeContext); 
 
   // Usa useCallback per memorizzare la funzione
   const refreshContacts = useCallback(async () => {
@@ -34,8 +34,7 @@ const ContactsComponent = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentUser]); // Dipende da currentUser
-
+  }, [currentUser]); 
   // Carica i contatti quando il componente viene montato
   useEffect(() => {
     if (currentUser) {

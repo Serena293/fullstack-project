@@ -33,7 +33,7 @@ const HomePage = () => {
     );
 
   return (
-    <div className={`vh-100 px-5 ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div className={`d-flex flex-column min-vh-100 px-5 ${darkMode ? "dark-mode" : "light-mode"}`}>
       <section className="container-fluid h-100 mt-4 px-0">
         <CustomNavbar toggleSidebar={toggleSidebar} />
 

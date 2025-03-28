@@ -1,24 +1,48 @@
-@import "./colors";
+@use "./colors";
 
 .task-list-container {
-//   padding: 1rem;
-  border-radius: 8px;
-  background: none; 
-  box-shadow: none; 
   max-width: 500px;
   margin: auto;
+  padding: 1rem;
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: colors.$light-form-bg;
 
   .list-group {
     list-style: none;
     padding: 0;
-    background: none; 
+    background: none;
     margin: 0;
   }
 
   .list-group-item {
-    background: none !important; 
-    border: none; 
-    margin:0;
+    margin: 0.5rem 0;
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid colors.$light-border;
+    background: colors.$light-bg;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.03);
+      background: darken(colors.$light-bg, 5%);
+    }
+  }
+
+  /* Dark Mode Styles */
+  .dark-mode & {
+    background: colors.$dark-form-bg;
+
+    .list-group-item {
+      background: colors.$dark-bg;
+      border-color: colors.$dark-border;
+      color: colors.$dark-text;
+
+      &:hover {
+        background: lighten(colors.$dark-bg, 10%);
+      }
+    }
   }
 }

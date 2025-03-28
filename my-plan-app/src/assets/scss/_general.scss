@@ -1,159 +1,119 @@
-html,
-body,
-#root {
+@use "./colors";
+
+/* Reset e layout base */
+html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
 }
 
-
-/* Modal Light Mode */
-.light-mode-modal {
-  background-color: $light-form-bg;
-  color: $light-text;
-}
-
-.light-mode-modal .modal-header {
-  background-color: $light-navbar-bg;
-  color: $light-text;
-}
-
-.light-mode-modal .modal-footer {
-  background-color: $light-border;
-}
-
-/* Modal Dark Mode */
-.dark-mode-modal {
-  background-color: $dark-form-bg;
-  color: $dark-text;
-}
-
-.dark-mode-modal .modal-header {
-  background-color: $dark-navbar-bg;
-  color: $dark-text;
-}
-
-.dark-mode-modal .modal-footer {
-  background-color: $dark-border;
-}
-
-
-/* Background trasparente per il backdrop del modale */
+/* Modal Backdrop (comune a entrambi i temi) */
 .modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5) !important; // Sfondo semi-trasparente
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Stile per il contenuto del modale in light mode */
-.light-mode-modal .modal-content {
-  background-color: rgba(255, 255, 255, 0.9); // Sfondo bianco leggermente trasparente
+/* Modal Content - Stili base (specificità per override bootstrap) */
+.modal-content {
+  border: none;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Stile per il contenuto del modale in dark mode */
-.dark-mode-modal .modal-content {
-  background-color: rgba(28, 28, 28, 0.9); // Sfondo scuro con trasparenza
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-  color: #e0e0e0;
-}
-
-/* Rimuove il bordo bianco attorno al modale */
-.modal-content {
-  border: none;
-}
-
-
-// contatti
-
-/* Aggiungi una classe per centralizzare i componenti */
+/* Container principale */
 .container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Centralizzare il form e dare più spazio */
+/* Form */
 .add-contact-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  
+  form {
+    background-color: colors.$light-form-bg;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+
+    .dark-mode & {
+      background-color: colors.$dark-form-bg;
+      color: colors.$dark-text;
+    }
+  }
 }
 
-.add-contact-form-container form {
-  background-color: $light-form-bg;  // Puoi usare il colore in base alla modalità
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 100%;
-  max-width: 500px;  // Limita la larghezza massima del form
-}
-
-/* Aggiungi il padding per i bordi e un margine tra i contatti */
+/* Lista contatti */
 .contact-list-container {
   margin-top: 30px;
   padding: 20px;
-  background-color: $light-form-bg;
+  background-color: colors.$light-form-bg;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .dark-mode & {
+    background-color: colors.$dark-form-bg;
+  }
 }
 
 .contact-item {
   padding: 15px;
   margin: 10px 0;
-  background-color: $light-bg;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .light-mode & {
+    background-color: colors.$light-bg;
+  }
+
+  .dark-mode & {
+    background-color: colors.$dark-bg;
+    color: colors.$dark-text;
+  }
+
+  button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .light-mode & {
+      background-color: colors.$light-accent;
+      color: colors.$light-text;
+      &:hover {
+        background-color: darken(colors.$light-accent, 10%);
+      }
+    }
+
+    .dark-mode & {
+      background-color: colors.$dark-accent;
+      color: colors.$dark-text;
+      &:hover {
+        background-color: darken(colors.$dark-accent, 10%);
+      }
+    }
+  }
 }
 
-.contact-item button {
-  background-color: $light-accent;
-  color: $light-text;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.contact-item button:hover {
-  background-color: darken($light-accent, 10%);
-}
-
-/* In modalità scura, cambia il colore di sfondo */
-.dark-mode .add-contact-form-container form {
-  background-color: $dark-form-bg;
-  color: $dark-text;
-}
-
-.dark-mode .contact-list-container {
-  background-color: $dark-form-bg;
-}
-
-.dark-mode .contact-item {
-  background-color: $dark-bg;
-  color: $dark-text;
-}
-
-.dark-mode .contact-item button {
-  background-color: $dark-accent;
-  color: $dark-text;
-}
-
-.dark-mode .contact-item button:hover {
-  background-color: darken($dark-accent, 10%);
-}
-
-/* Modifica il padding, margine e aspetto del footer */
+/* Footer */
 footer {
   padding: 20px;
-  background-color: $light-navbar-bg; // Puoi cambiare il colore in base alla modalità
   text-align: center;
   margin-top: 30px;
-}
 
-.dark-mode footer {
-  background-color: $dark-navbar-bg;
+  .light-mode & {
+    background-color: colors.$light-navbar-bg;
+  }
+
+  .dark-mode & {
+    background-color: colors.$dark-navbar-bg;
+  }
 }

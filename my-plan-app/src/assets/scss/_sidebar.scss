@@ -1,33 +1,37 @@
-/* 📌 Sidebar - Task List */
+@use "./colors";
+
+/* 📌 Sidebar - Struttura Base */
 .task-list-sidebar {
   position: fixed;
   top: 0;
-  right: -350px; /* Sidebar nascosta inizialmente */
+  right: -350px;
   width: 350px;
   height: 100%;
-  background-color: rgba(255, 247, 236, 0.85); /* Light mode con trasparenza */
-  backdrop-filter: blur(10px); /* Effetto sfocatura */
-  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
   padding: 20px;
   z-index: 1000;
   overflow-y: auto;
   transition: right 0.3s ease;
-  border-left: 3px solid $light-border;
+  
+  /* ☀️ Light Mode (default) */
+  background-color: rgba(colors.$light-bg, 0.85);
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+  border-left: 3px solid colors.$light-border;
+
+  /* 🌙 Dark Mode */
+  &.dark-mode {
+    background-color: rgba(colors.$dark-bg, 0.85);
+    border-left-color: colors.$dark-border;
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ✅ Stato visibile */
+  &.show {
+    right: 0;
+  }
 }
 
-/* 🎨 Modalità scura */
-.task-list-sidebar.dark-mode {
-  background-color: rgba(28, 28, 28, 0.85);
-  border-left: 3px solid $dark-border;
-  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.3);
-}
-
-/* ✅ Sidebar visibile */
-.task-list-sidebar.show {
-  right: 0;
-}
-
-/* 🔘 Header della sidebar */
+/* 🔘 Header */
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -35,38 +39,38 @@
   margin-bottom: 1rem;
 }
 
-/* ❌ Pulsante di chiusura */
+/* ❌ Pulsante chiusura */
 .close-sidebar-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: $light-text;
   transition: transform 0.2s ease-in-out;
 
+  /* ☀️ Light Mode */
+  color: colors.$light-text;
   &:hover {
     transform: scale(1.1);
-    color: darken($light-text, 15%);
+    color: darken(colors.$light-text, 15%);
+  }
+
+  /* 🌙 Dark Mode */
+  .dark-mode & {
+    color: colors.$dark-text;
+    &:hover {
+      color: lighten(colors.$dark-text, 15%);
+    }
   }
 }
 
-/* 🎨 Modalità scura */
-.dark-mode .close-sidebar-btn {
-  color: $dark-text;
-
-  &:hover {
-    color: lighten($dark-text, 15%);
-  }
-}
-
-/* 📱 Mobile: sidebar a schermo intero */
+/* 📱 Responsive */
 @media (max-width: 768px) {
   .task-list-sidebar {
     width: 100%;
     right: -100%;
-  }
 
-  .task-list-sidebar.show {
-    right: 0;
+    &.show {
+      right: 0;
+    }
   }
 }

@@ -1,36 +1,37 @@
+@use "./colors" /* Importa il file _colors.scss */
+
 /* Sfondo uniforme per tutta la pagina */
 .profile-page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--light-bg); // Usa il colore principale chiaro
-  }
-  
-  .dark-mode .profile-page-container {
-    background-color: var(--dark-bg); // Usa il colore principale scuro
-  }
-  
-  /* Centrare il form senza sfondo */
-  .profile-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  /* Assicura che il form sia senza background */
-  .profile-form {
-    background: transparent !important; 
-    box-shadow: none !important; // Rimuove ombre indesiderate
-  }
-  
-  /* Navbar più scura */
-  .navbar {
-    background-color: var(--light-navbar-bg);
-  }
-  
-  .dark-mode .navbar {
-    background-color: darken($dark-navbar-bg, 10%); // Scurisce il colore della navbar
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: colors.$light-bg; /* Usa il colore principale chiaro */
+}
+
+.dark-mode .profile-page-container {
+  background-color: colors.$dark-bg; /* Usa il colore principale scuro */
+}
+
+/* Centrare il form senza sfondo */
+.profile-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Assicura che il form sia senza background */
+.profile-form {
+  background: transparent !important; 
+  box-shadow: none !important; /* Rimuove ombre indesiderate */
+}
+
+/* Navbar più scura */
+.navbar {
+  background-color: colors.$light-navbar-bg; /* Usa il colore della navbar in modalità chiara */
+}
+
+.dark-mode .navbar {
+  background-color: darken(colors.$dark-navbar-bg, 10%); /* Scurisce il colore della navbar in modalità scura */
+}

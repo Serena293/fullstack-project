@@ -21,7 +21,7 @@ public class MessageDTO {
         this.read = message.isRead();
         this.senderId = message.getSender() != null ? message.getSender().getUserId() : null;
         this.senderUsername = message.getSender() != null ? message.getSender().getUsername() : null;
-      //  this.receiverId = message.getReceiver() != null ? message.getReceiver().getUserId() : null;
+      //this.receiverId = message.getReceiver() != null ? message.getReceiver().getUserId() : null;
         this.receiverUsername = message.getReceiver() != null ? message.getReceiver().getUsername() : null;
     }
 }

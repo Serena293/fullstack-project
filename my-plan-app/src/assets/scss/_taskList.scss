@@ -1,18 +1,21 @@
-@import "./colors";
+@use "./colors";
 
+/* 📌 Task List - Main Container */
 .task-list-container {
   padding: 1rem;
   border-radius: 8px;
-  background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   margin: auto;
   text-align: center;
 
+  /* ☀️ Light Mode (default) */
+  background: colors.$light-form-bg;
+  
   h3 {
     font-family: "Caveat", cursive;
     font-size: 1.6rem;
-    color: #5a3825;
+    color: colors.$light-text;
     margin-bottom: 1rem;
   }
 
@@ -22,7 +25,7 @@
   }
 
   .list-group-item {
-    background: #fffbf2; // Beige chiaro per armonia con il sughero
+    background: colors.$light-bg;
     margin-bottom: 0.5rem;
     padding: 0.8rem;
     border-radius: 6px;
@@ -31,6 +34,24 @@
 
     &:hover {
       transform: scale(1.03);
+    }
+  }
+
+  /* 🌙 Dark Mode */
+  .dark-mode & {
+    background: colors.$dark-form-bg;
+
+    h3 {
+      color: colors.$dark-text;
+    }
+
+    .list-group-item {
+      background: colors.$dark-bg;
+      color: colors.$dark-text;
+
+      &:hover {
+        background: lighten(colors.$dark-bg, 10%);
+      }
     }
   }
 }

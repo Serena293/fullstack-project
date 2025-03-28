@@ -1,9 +1,11 @@
+@use "./colors"; 
+
 /* Reset e Body */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: var(--bg-color);
+  background-color: colors.$light-bg;  /* Colore di sfondo per la modalità chiara */
 }
 
 #root {
@@ -13,11 +15,13 @@ body, html {
 
 /* 🎨 Definizione dei temi */
 .light-mode {
-  --bg-color: hsl(40, 100%, 90%);
+  background-color: colors.$light-bg;
+  color: colors.$light-text;
 }
 
 .dark-mode {
-  --bg-color: #1E1E1E;
+  background-color: colors.$dark-bg;
+  color: colors.$dark-text;
 }
 
 /* 📝 Task Items */
@@ -33,15 +37,15 @@ body, html {
   top: 0;
   bottom: 0;
   width: 4px;
-  background-color: #28a745;
+  background-color: colors.$light-accent; /* Colore per la barra di completamento */
 }
 
 .dark-mode .task-item.completed {
-  background-color: rgba(40, 167, 69, 0.1);
+  background-color: rgba(40, 167, 69, 0.1); /* Colore di background per modalità scura */
 }
 
 .light-mode .task-item.completed {
-  background-color: rgba(40, 167, 69, 0.05);
+  background-color: rgba(40, 167, 69, 0.05); /* Colore di background per modalità chiara */
 }
 
 /* 🏠 Home Page Layout */
@@ -49,11 +53,11 @@ body, html {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--light-bg);
+  background-color: colors.$light-bg;  /* Colore di sfondo per la modalità chiara */
 }
 
 .dark-mode .app-container {
-  background-color: var(--dark-bg);
+  background-color: colors.$dark-bg;  /* Colore di sfondo per la modalità scura */
 }
 
 .main-content {
@@ -67,17 +71,18 @@ body, html {
 }
 
 .section-title {
-  color: var(--light-text);
+  color: colors.$light-text;  /* Colore del testo per la modalità chiara */
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--light-accent);
+  border-bottom: 2px solid colors.$light-accent;  /* Colore della linea inferiore */
 }
 
 .dark-mode .section-title {
-  color: var(--dark-text);
-  border-bottom-color: var(--dark-accent);
+  color: colors.$dark-text;  /* Colore del testo per la modalità scura */
+  border-bottom-color: colors.$dark-accent;  /* Colore della linea inferiore per la modalità scura */
 }
 
+/* Media query per schermi più piccoli */
 @media (max-width: 768px) {
   .task-management-section {
     flex-direction: column;

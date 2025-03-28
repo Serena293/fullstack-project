@@ -1,19 +1,19 @@
-@import "./colors"; 
-@import "./theme";
-@import "./sidebar";
-@import "./general";
-@import "./footer";
-@import "./TaskItem";
-@import "./board";
-@import "./taskList";
-@import "./calendar";
-@import "./forgotPassword";
-@import"./resetPassword";
-@import "./registerFrom";
-@import "./task";
+@use "./colors"; 
+@use "./theme";
+@use "./sidebar";
+@use "./general";
+@use "./footer";
+@use "./TaskItem";
+@use "./board";
+@use "./taskList";
+@use "./calendar";
+@use "./forgotPassword";
+@use"./resetPassword";
+@use "./registerFrom";
+@use "./task";
 
 
 
-@import "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/bootstrap";
 
 

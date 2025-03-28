@@ -1,21 +1,19 @@
-@import "./colors"; 
+@use "./colors";
 
-.footer {
+/* Footer */
+footer {
+  padding: 20px;
   text-align: center;
-  padding: 1rem;
-  font-size: 1rem;
-  width: 100%;
-  position: relative;
-  bottom: 0;
+  margin-top: 30px;
   transition: background-color 0.3s ease, color 0.3s ease;
 
-  &.dark-mode {
+  // Usa variabili globali per i colori
+  background-color: $light-navbar-bg; // Colore per light mode
+  color: $light-text;
+
+  // Modalità scura
+  .dark-mode & {
     background-color: $dark-navbar-bg;
     color: $dark-text;
-  }
-
-  &.light-mode {
-    background-color: $light-navbar-bg;
-    color: $light-text;
   }
 }
