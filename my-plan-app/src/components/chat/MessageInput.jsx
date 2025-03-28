@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, InputGroup, Button, Alert, Spinner } from "react-bootstrap";
 import { Send } from "react-bootstrap-icons";
+import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto per Dark Mode
 import useAuth from "../../hooks/useAuth";
 
 const MessageInput = ({ selectedChat, onMessageSent }) => {
   const { currentUser } = useAuth();
+  const { darkMode } = useContext(DarkModeContext); // Ottieni lo stato di darkMode dal contesto
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,6 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
         }),
       });
 
-      // Prima di parsare la risposta, controlliamo se è vuota
       const responseText = await response.text();
       if (!responseText) {
         throw new Error("La risposta del server è vuota");
@@ -64,7 +65,7 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
   };
 
   return (
-    <div className="p-2 border-top">
+    <div className={`p-2 border-top ${darkMode ? "bg-dark text-white" : "bg-light text-dark"}`}>
       {error && (
         <Alert variant="danger" onClose={() => setError(null)} dismissible>
           {error}
@@ -80,10 +81,11 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
             onChange={(e) => setMessage(e.target.value)}
             aria-label="Messaggio"
             disabled={loading}
+            className={darkMode ? "bg-dark text-white border-0" : "bg-light text-dark"}
           />
-          <Button 
-            type="submit" 
-            variant="primary" 
+          <Button
+            type="submit"
+            variant={darkMode ? "secondary" : "primary"} // Cambia il colore del bottone in base alla modalità
             disabled={!message.trim() || loading}
             aria-label="Invia messaggio"
           >

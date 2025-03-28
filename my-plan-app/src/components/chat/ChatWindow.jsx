@@ -3,7 +3,7 @@ import { ListGroup, Spinner } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import MessageInput from "./MessageInput";
 
-const ChatWindow = ({ selectedChat }) => {
+const ChatWindow = ({ selectedChat, darkMode }) => {
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const ChatWindow = ({ selectedChat }) => {
         return;
       }
 
-      console.log("Fetching messages for:", selectedChat); 
+      console.log("Fetching messages for:", selectedChat);
       try {
         const response = await fetch(
           `http://localhost:8080/api/messages/chat?userId=${currentUser.userId}&username=${selectedChat.username}`,
@@ -27,13 +27,11 @@ const ChatWindow = ({ selectedChat }) => {
           }
         );
 
-        console.log("Response status:", response.status); 
         if (!response.ok) {
           throw new Error("Errore nel recupero dei messaggi");
         }
 
         const data = await response.json();
-        console.log("Messages received:", data); 
         setMessages(data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -43,7 +41,6 @@ const ChatWindow = ({ selectedChat }) => {
     };
 
     if (selectedChat) {
-      console.log("selectedChat is defined, fetching messages...");
       fetchMessages();
       const interval = setInterval(fetchMessages, 5000); // Polling ogni 5s
       return () => clearInterval(interval);
@@ -51,14 +48,14 @@ const ChatWindow = ({ selectedChat }) => {
   }, [selectedChat, currentUser]);
 
   return (
-    <div className="p-3 d-flex flex-column" style={{ height: "100vh" }}>
-      <h5 className="text-center bg-light p-2">
+    <div className={`p-3 d-flex flex-column ${darkMode ? "dark-mode" : "light-mode"}`} style={{ height: "100vh" }}>
+      <h5 className={`text-center p-2 ${darkMode ? "bg-dark navbar-dark text-white" : "bg-light text-dark"}`}>
         Chat con {selectedChat ? `${selectedChat.firstName} ${selectedChat.lastName}` : "Seleziona un contatto"}
       </h5>
       <div className="flex-grow-1 overflow-auto">
         {loading ? (
           <div className="text-center p-3">
-            <Spinner animation="border" variant="primary" />
+            <Spinner animation="border" variant={darkMode ? "light" : "primary"} />
           </div>
         ) : (
           <ListGroup>
@@ -66,11 +63,10 @@ const ChatWindow = ({ selectedChat }) => {
               messages.map((msg) => (
                 <ListGroup.Item
                   key={msg.id}
-                  className={
-                    msg.senderId === currentUser.userId
-                      ? "text-end bg-primary text-white"
-                      : "text-start bg-light"
-                  }
+                  className={`
+                    ${msg.senderId === currentUser.userId ? "text-end" : "text-start"}
+                    ${darkMode ? "bg-dark text-white" : msg.senderId === currentUser.userId ? "bg-primary text-white" : "bg-light text-dark"}
+                  `}
                 >
                   {msg.content}
                 </ListGroup.Item>
@@ -81,7 +77,7 @@ const ChatWindow = ({ selectedChat }) => {
           </ListGroup>
         )}
       </div>
-      <MessageInput selectedChat={selectedChat} onMessageSent={setMessages} />
+      <MessageInput selectedChat={selectedChat} onMessageSent={setMessages} darkMode={darkMode} />
     </div>
   );
 };

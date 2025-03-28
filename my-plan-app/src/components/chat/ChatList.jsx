@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ListGroup, Spinner } from "react-bootstrap";
 import { PersonFill } from "react-bootstrap-icons";
+import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto per Dark Mode
 
 const ChatList = ({ contacts, onSelectChat, loading }) => {
+  const { darkMode } = useContext(DarkModeContext); // Ottieni lo stato di darkMode dal contesto
 
   return (
-    <div>
-      <h5 className="p-3 bg-light text-center">Chat</h5>
+    <div className={`d-flex flex-column ${darkMode ? "dark-mode" : "light-mode"}`}>
+      <h5 className={`p-3 text-center ${darkMode ? "bg-dark text-white" : "bg-light text-dark"}`}>
+        Chat
+      </h5>
       {loading ? (
         <div className="text-center p-3">
-          <Spinner animation="border" variant="primary" />
+          <Spinner animation="border" variant={darkMode ? "light" : "primary"} />
         </div>
       ) : (
         <ListGroup>
@@ -19,9 +23,9 @@ const ChatList = ({ contacts, onSelectChat, loading }) => {
                 key={user.username}
                 action
                 onClick={() => onSelectChat(user)}
-                className="d-flex align-items-center"
+                className={`d-flex align-items-center ${darkMode ? "bg-dark text-white" : "bg-light text-dark"}`}
               >
-                <PersonFill className="me-2 text-primary" size={20} />
+                <PersonFill className={`me-2 ${darkMode ? "text-light" : "text-primary"}`} size={20} />
                 {user.firstName} {user.lastName}
               </ListGroup.Item>
             ))
