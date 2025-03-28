@@ -1,5 +1,5 @@
-import TaskItem from "../sharedcomponents/TaskItem";
 import React from "react";
+import TaskItem from "../sharedcomponents/TaskItem";
 import useTasks from "../../hooks/useTasks";
 import useAuth from "../../hooks/useAuth";
 
@@ -7,28 +7,28 @@ const TaskList = () => {
   const { currentUser } = useAuth();
   const { tasks, deleteTask, editTask, toggleTaskCompletion, refreshTasks, loading, error } = useTasks(currentUser?.userId);
 
-  // 🔍 Log per debug
-  console.log("📥 Task in TaskList:", tasks);
+  // Debugging log
+  console.log("📥 Tasks in TaskList:", tasks);
 
-  if (loading) return <p>⏳ Caricamento in corso...</p>;
-  if (error) return <p className="text-danger">❌ Errore nel caricamento delle task: {error}</p>;
+  if (loading) return <p>⏳ Loading tasks...</p>;
+  if (error) return <p className="text-danger">❌ Error loading tasks: {error}</p>;
 
   return (
     <div className="task-list">
       {tasks && tasks.length > 0 ? (
-        tasks.map(task => (
+        tasks.map((task) => (
           <TaskItem
             key={task.taskId}
             task={task}
-            refreshTasks={refreshTasks} // ✅ Aggiunto per coerenza con BoardComponent
+            refreshTasks={refreshTasks} // Ensuring consistency with BoardComponent
             deleteTask={deleteTask}
             editTask={editTask}
-            toggleTaskCompletion={toggleTaskCompletion} // ✅ Aggiunto
+            toggleTaskCompletion={toggleTaskCompletion}
             variant="normal"
           />
         ))
       ) : (
-        <p>📌 Nessuna task disponibile.</p>
+        <p>📌 No tasks available.</p>
       )}
     </div>
   );

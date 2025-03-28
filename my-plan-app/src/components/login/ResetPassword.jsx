@@ -1,7 +1,9 @@
+// ResetPassword component: A form for resetting the user's password. The user must provide a new password and confirm it. 
+// The token from the URL query parameter is used to validate the request before making the password reset API call.
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-
 
 const ResetPassword = ({ theme }) => {
   const [password, setPassword] = useState("");
@@ -18,14 +20,14 @@ const ResetPassword = ({ theme }) => {
     if (tokenFromUrl) {
       setToken(tokenFromUrl);
     } else {
-      setError("Token non valido o mancante.");
+      setError("Invalid or missing token.");
     }
   }, [location.search]);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError("Le password non coincidono.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -38,7 +40,7 @@ const ResetPassword = ({ theme }) => {
       setError("");
       setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
-      setError("Errore durante il reset della password.");
+      setError("Error during password reset.");
       setMessage("");
     }
   };
@@ -53,7 +55,7 @@ const ResetPassword = ({ theme }) => {
 
         <form onSubmit={handleResetPassword}>
           <div className="form-group">
-            <label>Nuova Password</label>
+            <label>New Password</label>
             <input
               type="password"
               value={password}
@@ -63,7 +65,7 @@ const ResetPassword = ({ theme }) => {
           </div>
 
           <div className="form-group">
-            <label>Conferma Password</label>
+            <label>Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}

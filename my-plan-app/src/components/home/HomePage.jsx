@@ -1,3 +1,6 @@
+// HomePage: The main dashboard for users to manage tasks. 
+// It includes a calendar, task creation form, board for Post-its, and a task list sidebar.
+
 import React, { useState, useContext } from "react";
 import CalendarComponent from "../sharedcomponents/CalendarComponet";
 import CreateTasksForm from "./CreateTasksForms";
@@ -25,12 +28,11 @@ const HomePage = () => {
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
-    };
+  };
 
-  if (error)
-    return (
-      <p className="text-danger">Errore nel caricamento delle task: {error}</p>
-    );
+  if (error) {
+    return <p className="text-danger">Error loading tasks: {error}</p>;
+  }
 
   return (
     <div className={`d-flex flex-column min-vh-100 px-5 ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -47,6 +49,7 @@ const HomePage = () => {
           </div>
         </div>
 
+        {/* Post-it Board Section */}
         <div className="mb-4">
           <BoardComponent
             tasks={tasks?.filter((task) => task.isItPostIt)}
@@ -57,23 +60,22 @@ const HomePage = () => {
           />
         </div>
 
+        {/* Sidebar for Task List */}
         {isSidebarVisible && (
-  <div className={`task-list-sidebar ${darkMode ? "dark-mode" : ""} ${isSidebarVisible ? "show" : ""}`}>
-    <div className="sidebar-header">
-      <h2>Task List</h2>
-      <button className="close-sidebar-btn" onClick={toggleSidebar}>✖</button>
-    </div>
-    <TaskList
-      tasks={tasks}
-      refreshTasks={refreshTasks}
-      deleteTask={deleteTask}
-      editTask={editTask}
-      toggleTaskCompletion={toggleTaskCompletion} 
-    />
-  </div>
-)}
-
-
+          <div className={`task-list-sidebar ${darkMode ? "dark-mode" : ""} ${isSidebarVisible ? "show" : ""}`}>
+            <div className="sidebar-header">
+              <h2>Task List</h2>
+              <button className="close-sidebar-btn" onClick={toggleSidebar}>✖</button>
+            </div>
+            <TaskList
+              tasks={tasks}
+              refreshTasks={refreshTasks}
+              deleteTask={deleteTask}
+              editTask={editTask}
+              toggleTaskCompletion={toggleTaskCompletion} 
+            />
+          </div>
+        )}
 
         <Footer />
       </section>

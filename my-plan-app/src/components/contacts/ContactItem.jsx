@@ -1,28 +1,28 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap"; // Importa i componenti di Bootstrap
+import { Button, Card } from "react-bootstrap";
 
 const ContactItem = ({ contact, onDelete, onChat }) => {
   return (
     <Card className="mb-3">
-      <Card.Body
-        className="d-flex justify-content-between align-items-center"
-      >
-        <span>{contact.username}</span>
+      <Card.Body className="d-flex justify-content-between align-items-center">
+        <span className="fw-bold">{contact.username}</span>
         <div>
-          {/* Pulsante per la chat */}
+          {/* Chat button */}
           <Button
             variant="primary"
             size="sm"
             className="me-2"
             onClick={() => onChat(contact)}
+            aria-label={`Chat with ${contact.username}`}
           >
             💬
           </Button>
-          {/* Pulsante per la rimozione */}
+          {/* Delete button */}
           <Button
             variant="danger"
             size="sm"
             onClick={() => onDelete(contact)}
+            aria-label={`Remove ${contact.username} from contacts`}
           >
             ❌
           </Button>

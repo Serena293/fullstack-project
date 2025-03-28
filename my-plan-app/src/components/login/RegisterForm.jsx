@@ -1,3 +1,6 @@
+// RegisterForm component: A form for user registration where users can sign up by providing personal details, username, email, and password. 
+// The form validates the password and checks for matching passwords before submitting the registration data to the backend.
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";

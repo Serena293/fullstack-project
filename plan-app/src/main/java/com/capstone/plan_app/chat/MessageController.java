@@ -21,6 +21,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    // Endpoint to send a message
     @PostMapping("/send")
     public ResponseEntity<?> sendMessage(@Valid @RequestBody MessageRequest request) {
         try {
@@ -30,16 +31,17 @@ public class MessageController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Errore durante l'invio del messaggio: " + e.getMessage());
+                    .body("Error during message sending: " + e.getMessage());
         }
     }
 
+    // Endpoint to get conversation messages between two users
     @GetMapping("/chat")
     public ResponseEntity<?> getConversation(
             @RequestParam Long userId,
             @RequestParam String username) {
         if (username == null || username.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("Username non valido");
+            return ResponseEntity.badRequest().body("Invalid username");
         }
 
         try {
@@ -58,10 +60,11 @@ public class MessageController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
-                    .body("Errore interno del server: " + e.getMessage());
+                    .body("Internal server error: " + e.getMessage());
         }
     }
 
+    // Endpoint to mark a message as read
     @PutMapping("/{messageId}/read")
     public ResponseEntity<?> markAsRead(@PathVariable Long messageId) {
         try {
@@ -71,7 +74,7 @@ public class MessageController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Errore durante l'aggiornamento dello stato del messaggio");
+                    .body("Error updating message status");
         }
     }
 }

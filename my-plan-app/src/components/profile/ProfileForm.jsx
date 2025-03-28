@@ -20,9 +20,7 @@ const ProfileForm = () => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get("http://localhost:8080/api/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         setProfileData({
@@ -43,10 +41,7 @@ const ProfileForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProfileData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setProfileData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -58,9 +53,7 @@ const ProfileForm = () => {
       const token = localStorage.getItem("authToken");
       const response = await axios.patch(
         "http://localhost:8080/api/profile",
-        {
-          bio: profileData.bio,
-        },
+        { bio: profileData.bio },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,10 +62,7 @@ const ProfileForm = () => {
         }
       );
 
-      setProfileData((prev) => ({
-        ...prev,
-        bio: response.data.bio,
-      }));
+      setProfileData((prev) => ({ ...prev, bio: response.data.bio }));
       setSuccessMessage("Profile updated successfully!");
       setIsEditing(false);
     } catch (err) {
@@ -121,42 +111,30 @@ const ProfileForm = () => {
                     {profileData.firstName} {profileData.lastName}
                   </h2>
                   {!isEditing ? (
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => setIsEditing(true)}
-                    >
+                    <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
                       Edit Profile
                     </button>
                   ) : (
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => setIsEditing(false)}
-                    >
+                    <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
                       Cancel
                     </button>
                   )}
                 </div>
 
-                {successMessage && (
-                  <div className="alert alert-success">{successMessage}</div>
-                )}
+                {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row mb-4">
-                    
                     <div className="col-md-8">
                       <div className="row mb-3">
                         <div className="col-md-6">
-                          {" "}
                           <p>{profileData.firstName}</p>
                         </div>
                         <div className="col-md-6">
-                      
                           <p>{profileData.lastName}</p>
                         </div>
                       </div>
                       <div className="mb-3">
-                     
                         <p>{profileData.email}</p>
                       </div>
                       <div className="mb-3">
@@ -180,11 +158,7 @@ const ProfileForm = () => {
 
                   {isEditing && (
                     <div className="d-flex justify-content-end mt-4">
-                      <button
-                        type="submit"
-                        className="btn btn-success"
-                        disabled={isLoading}
-                      >
+                      <button type="submit" className="btn btn-success" disabled={isLoading}>
                         {isLoading ? "Saving..." : "Save Changes"}
                       </button>
                     </div>

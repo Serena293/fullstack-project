@@ -1,3 +1,6 @@
+// LoginForm component: A form for user authentication where users can log in using their username and password. 
+// Upon successful login, the user is redirected to the home page, and authentication tokens are stored in local storage.
+
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -33,7 +36,7 @@ const LoginForm = () => {
             localStorage.setItem("userId", decoded.sub);
           }
         } catch (error) {
-          console.error("Errore nella decodifica del token:", error);
+          console.error("Error decoding token:", error);
         }
       }
 

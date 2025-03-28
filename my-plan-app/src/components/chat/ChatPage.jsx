@@ -1,29 +1,36 @@
+/**
+ * ChatPage Component
+ * 
+ * Displays a chat interface where users can select a contact from the list to chat with. 
+ * Shows a loading spinner while fetching contacts, and allows users to view selected chat.
+ */
+
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-import ChatList from "./ChatList"; 
-import useAuth from "../../hooks/useAuth"; 
+import ChatList from "./ChatList";
+import useAuth from "../../hooks/useAuth";
 import ChatWindow from "./ChatWindow";
-import CustomNavbar from "../sharedcomponents/CustomNavbar"
-import Footer from "../sharedcomponents/Footer"
+import CustomNavbar from "../sharedcomponents/CustomNavbar";
+import Footer from "../sharedcomponents/Footer";
 
 const ChatPage = () => {
-  const { currentUser } = useAuth(); 
-  const [contacts, setContacts] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [selectedChat, setSelectedChat] = useState(null); 
+  const { currentUser } = useAuth();
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedChat, setSelectedChat] = useState(null);
 
-  // Aggiunto log per tracciare i cambiamenti di selectedChat
+  // Logs when selectedChat changes
   useEffect(() => {
     console.log("SelectedChat changed:", selectedChat);
   }, [selectedChat]);
 
+  // Select a contact to start chatting
   const handleChatSelect = (contact) => {
-    console.log("Chat selezionata - oggetto completo:", contact);
-    console.log("ID utente contatto:", contact?.userId);
-    console.log("Nome contatto:", contact?.firstName, contact?.lastName);
+    console.log("Selected Chat - full object:", contact);
     setSelectedChat(contact);
   };
 
+  // Fetch contacts when component mounts or currentUser changes
   useEffect(() => {
     const fetchContacts = async () => {
       try {
@@ -34,31 +41,28 @@ const ChatPage = () => {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           }
         });
-       
-        console.log('Response status:', response.status); // Debug status
-        console.log('Response headers:', Object.fromEntries(response.headers.entries())); // Debug headers
-
+        
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error(`Errore ${response.status}: ${errorText}`);
+          throw new Error(`Error ${response.status}: ${errorText}`);
         }
 
         const data = await response.json();
-        console.log("Dati contatti ricevuti:", data); // Debug dati ricevuti
-        setContacts(data); 
+        console.log("Fetched contacts data:", data); // Debug data
+        setContacts(data);
       } catch (error) {
-        console.error("Errore nel recupero dei contatti:", error);
+        console.error("Error fetching contacts:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     if (currentUser) {
       console.log("Current user ID:", currentUser.userId); // Debug user ID
-      fetchContacts(); 
+      fetchContacts();
     }
   }, [currentUser]);
 
@@ -77,11 +81,11 @@ const ChatPage = () => {
         <Col md={8} className="d-flex flex-column">
           {selectedChat ? (
             <>
-              <p>Debug: Chat selezionata con ID {selectedChat.userId}</p>
+              {/* <p>Debug: Chat selected with ID {selectedChat.userId}</p> */}
               <ChatWindow selectedChat={selectedChat} className="flex-grow-1" />
             </>
           ) : (
-            <p className="text-center p-3 flex-grow-1">Seleziona una chat dalla lista</p>
+            <p className="text-center p-3 flex-grow-1">Select a chat from the list</p>
           )}
         </Col>
       </Row>

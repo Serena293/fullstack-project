@@ -21,21 +21,21 @@ public class MessageService {
         this.userRepository = userRepository;
     }
 
-    public Message sendMessage(Long senderId, Long receiverId, String content) {
-        if (content == null || content.trim().isEmpty()) {
+    public Message sendMessage(MessageRequest request) {
+        if (request.getContent() == null || request.getContent().trim().isEmpty()) {
             throw new IllegalArgumentException("Il contenuto del messaggio non può essere vuoto");
         }
 
-        AppUsers sender = userRepository.findById(senderId)
-                .orElseThrow(() -> new IllegalArgumentException("Utente mittente non trovato con ID: " + senderId));
+        AppUsers sender = userRepository.findById(request.getSenderId())
+                .orElseThrow(() -> new IllegalArgumentException("Utente mittente non trovato con ID: " + request.getSenderId()));
 
-        AppUsers receiver = userRepository.findById(receiverId)
-                .orElseThrow(() -> new IllegalArgumentException("Utente destinatario non trovato con ID: " + receiverId));
+        AppUsers receiver = userRepository.findByUsername(request.getReceiverUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Utente destinatario non trovato con username: " + request.getReceiverUsername()));
 
         Message message = new Message();
         message.setSender(sender);
         message.setReceiver(receiver);
-        message.setContent(content.trim());
+        message.setContent(request.getContent().trim());
         message.setTimestamp(LocalDateTime.now());
         message.setRead(false);
 
@@ -48,10 +48,10 @@ public class MessageService {
         }
 
         // Verifica che l'utente esista
-        AppUsers user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato con ID: " + userId));
 
-        // Verifica che l'username esista (opzionale, a seconda dei requisiti)
+        // Verifica che l'username esista
         userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato con username: " + username));
 

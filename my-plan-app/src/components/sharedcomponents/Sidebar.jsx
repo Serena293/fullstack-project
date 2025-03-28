@@ -1,4 +1,6 @@
-// Sidebar.js
+//  A sidebar and opens on click that displays a list of tasks for the current user. 
+// It fetches tasks using the `useTasks` hook and shows an error message if task loading fails or a loading message if tasks are still being fetched.
+
 import React from "react";
 import TaskList from "../home/TaskList";
 import { useTasks } from "../../hooks/useTasks";
@@ -8,8 +10,11 @@ const Sidebar = () => {
   const { currentUser } = useAuth();
   const { tasks, error } = useTasks(currentUser?.userId);
 
-  if (error) return <p>Errore nel caricamento delle task: {error}</p>;
-  if (!tasks) return <p>Caricamento delle task in corso...</p>;
+  // Display error message if task loading fails
+  if (error) return <p>Error loading tasks: {error}</p>;
+
+  // Display loading message while tasks are being fetched
+  if (!tasks) return <p>Loading tasks...</p>;
 
   return (
     <div
@@ -25,7 +30,7 @@ const Sidebar = () => {
         overflowY: "auto",
       }}
     >
-      <TaskList tasks={tasks} /> 
+      <TaskList tasks={tasks} />
     </div>
   );
 };

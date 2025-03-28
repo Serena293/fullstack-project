@@ -1,3 +1,6 @@
+// CustomNavbar: A responsive navigation bar with links to different sections such as Home, Profile, Chat, and Contacts. 
+// It also includes a toggle for dark/light mode and a logout option. The sidebar can be toggled via the Task List link.
+
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../DarkModeContext";
@@ -6,21 +9,19 @@ const CustomNavbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const { darkMode, setDarkMode } = useContext(DarkModeContext);
 
+  // Toggle between dark and light mode
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
   };
 
+  // Handle user logout and redirect to login page
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
   };
 
   return (
-    <nav
-      className={`navbar navbar-expand-lg ${
-        darkMode ? "dark-mode" : "light-mode"
-      }`}
-    >
+    <nav className={`navbar navbar-expand-lg ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/home">
           Home
@@ -50,26 +51,21 @@ const CustomNavbar = ({ toggleSidebar }) => {
                 Task List
               </a>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="/profile">
                 Profile
               </Link>
             </li>
-            
             <li className="nav-item">
               <Link className="nav-link" to="/chat">
-              Chat
+                Chat
               </Link>
             </li>
-
-
             <li className="nav-item">
               <Link className="nav-link" to="/contacts">
                 Contacts
               </Link>
             </li>
-
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -81,10 +77,7 @@ const CustomNavbar = ({ toggleSidebar }) => {
               >
                 More
               </a>
-              <ul
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="moreDropdown"
-              >
+              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
                 <li>
                   <a className="dropdown-item" href="#" onClick={handleLogout}>
                     Log out
@@ -93,13 +86,8 @@ const CustomNavbar = ({ toggleSidebar }) => {
               </ul>
             </li>
             <li className="nav-item">
-              <button
-                className="btn btn-outline-secondary ms-2"
-                onClick={toggleDarkMode}
-              >
-                <i
-                  className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}
-                ></i>
+              <button className="btn btn-outline-secondary ms-2" onClick={toggleDarkMode}>
+                <i className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}></i>
               </button>
             </li>
           </ul>

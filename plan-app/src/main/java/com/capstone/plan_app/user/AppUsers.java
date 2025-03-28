@@ -1,6 +1,5 @@
 package com.capstone.plan_app.user;
 
-import com.capstone.plan_app.profile.ProfileUser;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

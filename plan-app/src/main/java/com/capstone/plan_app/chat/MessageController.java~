@@ -1,6 +1,5 @@
 package com.capstone.plan_app.chat;
 
-import com.capstone.plan_app.user.AppUsers;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +22,24 @@ public class MessageController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<MessageDTO> sendMessage(@Valid @RequestBody MessageRequest request) {
-        Message sentMessage = messageService.sendMessage(request);
-        return ResponseEntity.ok(new MessageDTO(sentMessage));
+    public ResponseEntity<?> sendMessage(@Valid @RequestBody MessageRequest request) {
+        try {
+            Message sentMessage = messageService.sendMessage(request);
+            return ResponseEntity.ok(new MessageDTO(sentMessage));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Errore durante l'invio del messaggio: " + e.getMessage());
+        }
     }
 
     @GetMapping("/chat")
-    public ResponseEntity<List<MessageDTO>> getConversation(
+    public ResponseEntity<?> getConversation(
             @RequestParam Long userId,
             @RequestParam String username) {
         if (username == null || username.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
+            return ResponseEntity.badRequest().body("Username non valido");
         }
 
         try {
@@ -49,21 +55,23 @@ public class MessageController {
 
             return ResponseEntity.ok(dtos);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            System.err.println("Errore interno: " + e.getMessage());
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError()
+                    .body("Errore interno del server: " + e.getMessage());
         }
     }
 
     @PutMapping("/{messageId}/read")
-    public ResponseEntity<Void> markAsRead(@PathVariable Long messageId) {
+    public ResponseEntity<?> markAsRead(@PathVariable Long messageId) {
         try {
             messageService.markAsRead(messageId);
             return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            System.err.println("Errore durante il marking: " + e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Errore durante l'aggiornamento dello stato del messaggio");
         }
     }
 }

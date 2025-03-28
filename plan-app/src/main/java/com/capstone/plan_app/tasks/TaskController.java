@@ -29,13 +29,13 @@ public class TaskController {
         this.appUsersRepository = appUsersRepository;
     }
 
-    // Metodo per ottenere l'ID dell'utente autenticato con log aggiuntivi
+    // Method to get the authenticated user's ID with additional logging
     private Long getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         logger.info("➡️ Authentication object: {}", authentication);
 
         if (authentication == null) {
-            logger.error("❌ Errore: SecurityContext è NULL!");
+            logger.error("❌ Error: SecurityContext is NULL!");
             throw new RuntimeException("User not authenticated");
         }
 
@@ -45,98 +45,96 @@ public class TaskController {
 
         if (authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
             Long userId = userDetails.getAppUser().getUserId();
-            logger.info("✅ Utente autenticato con ID: {}", userId);
+            logger.info("✅ Authenticated user with ID: {}", userId);
             return userId;
         } else {
-            logger.error("❌ Errore: Il principal non è un'istanza di CustomUserDetails! Principal ricevuto: {}", authentication.getPrincipal());
+            logger.error("❌ Error: Principal is not an instance of CustomUserDetails! Principal received: {}", authentication.getPrincipal());
             throw new RuntimeException("User not authenticated");
         }
     }
 
+    // Endpoint to delete a task by its ID
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable Long taskId) {
-        logger.info("➡️ Richiesta DELETE /api/tasks/{} ricevuta", taskId);
+        logger.info("➡️ DELETE request /api/tasks/{} received", taskId);
         try {
             Long userId = getAuthenticatedUserId();
-            logger.info("🔍 Eliminazione task {} per userId: {}", taskId, userId);
+            logger.info("🔍 Deleting task {} for userId: {}", taskId, userId);
 
             boolean deleted = taskService.deleteTask(taskId);
             if (deleted) {
-                logger.info("✅ Task {} eliminata con successo", taskId);
+                logger.info("✅ Task {} successfully deleted", taskId);
                 return ResponseEntity.ok().build();
             } else {
-                logger.warn("⚠️ Task {} non trovata o non autorizzata per userId: {}", taskId, userId);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task non trovata o non autorizzata");
+                logger.warn("⚠️ Task {} not found or not authorized for userId: {}", taskId, userId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found or not authorized");
             }
         } catch (Exception e) {
-            logger.error("❌ Errore nell'eliminazione della task {}: {}", taskId, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nell'eliminazione della task");
+            logger.error("❌ Error deleting task {}: {}", taskId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting task");
         }
     }
 
-    // Endpoint per ottenere tutte le task dell'utente autenticato
+    // Endpoint to get all tasks for the authenticated user
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getTasks(@RequestHeader("Authorization") String token) {
-        logger.info("➡️ Richiesta GET /api/tasks ricevuta. Token: {}", token);
+        logger.info("➡️ GET request /api/tasks received. Token: {}", token);
         try {
             Long userId = getAuthenticatedUserId();
-            logger.info("🔍 Recupero task per userId: {}", userId);
+            logger.info("🔍 Retrieving tasks for userId: {}", userId);
 
             List<TaskDTO> tasks = taskService.getTasksByUserId(userId);
-            logger.info("✅ Task recuperate con successo per userId: {}. Numero di task: {}", userId, tasks.size());
+            logger.info("✅ Tasks successfully retrieved for userId: {}. Number of tasks: {}", userId, tasks.size());
 
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
-            logger.error("❌ Errore nel recupero delle task: {}", e.getMessage(), e);
+            logger.error("❌ Error retrieving tasks: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // Endpoint per ottenere le task di un utente specifico tramite ID
+    // Endpoint to get tasks for a specific user by their ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TaskDTO>> getTasksByUserId(@PathVariable Long userId) {
-        logger.info("➡️ Richiesta GET /api/tasks/user/{} ricevuta", userId);
-
-        // 🔹 Debug aggiuntivo per vedere se il SecurityContext mantiene l'autenticazione
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("🔍 SecurityContextHolder Authentication: {}", authentication);
+        logger.info("➡️ GET request /api/tasks/user/{} received", userId);
 
         try {
             List<TaskDTO> tasks = taskService.getTasksByUserId(userId);
-            logger.info("✅ Task recuperate con successo per userId: {}. Numero di task: {}", userId, tasks.size());
+            logger.info("✅ Tasks successfully retrieved for userId: {}. Number of tasks: {}", userId, tasks.size());
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
-            logger.error("❌ Errore nel recupero delle task per userId {}: {}", userId, e.getMessage(), e);
+            logger.error("❌ Error retrieving tasks for userId {}: {}", userId, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // Endpoint per creare una nuova task per l'utente autenticato
+    // Endpoint to create a new task for the authenticated user
     @PostMapping
     public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody Task task) {
-        logger.info("➡️ Richiesta POST /api/tasks ricevuta. Task: {}", task);
+        logger.info("➡️ POST request /api/tasks received. Task: {}", task);
         try {
             Long userId = getAuthenticatedUserId();
-            logger.info("🔍 Creazione task per userId: {}", userId);
+            logger.info("🔍 Creating task for userId: {}", userId);
 
             AppUsers appUser = appUsersRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             task.setAppUser(appUser);
             TaskDTO createdTask = taskService.createTask(task);
-            logger.info("✅ Task creata con successo: {}", createdTask);
+            logger.info("✅ Task successfully created: {}", createdTask);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
         } catch (Exception e) {
-            logger.error("❌ Errore nella creazione della task: {}", e.getMessage(), e);
+            logger.error("❌ Error creating task: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+    // Endpoint to update the completion status of a task
     @PatchMapping("/{taskId}/completion")
     public ResponseEntity<TaskDTO> updateTaskCompletion(
             @PathVariable Long taskId,
-            @RequestBody Map<String, Boolean> requestBody) {  // ✅ Accetta il valore dal body
+            @RequestBody Map<String, Boolean> requestBody) {  // Accepts the completion value from the body
         boolean completed = requestBody.getOrDefault("completed", false);
 
         try {
@@ -148,25 +146,25 @@ public class TaskController {
         }
     }
 
-
+    // Endpoint to edit a task
     @PutMapping("/{taskId}")
     public ResponseEntity<?> editTask(@PathVariable Long taskId, @Valid @RequestBody Task updatedTask) {
-        logger.info("➡️ Richiesta PUT /api/tasks/{} ricevuta. Task aggiornata: {}", taskId, updatedTask);
+        logger.info("➡️ PUT request /api/tasks/{} received. Updated task: {}", taskId, updatedTask);
 
         try {
             Long userId = getAuthenticatedUserId();
-            logger.info("🔍 Modifica della task {} per userId: {}", taskId, userId);
+            logger.info("🔍 Modifying task {} for userId: {}", taskId, userId);
 
             TaskDTO editedTask = taskService.editTask(taskId, updatedTask);
-            logger.info("✅ Task {} modificata con successo per userId: {}", taskId, userId);
+            logger.info("✅ Task {} successfully modified for userId: {}", taskId, userId);
 
             return ResponseEntity.ok(editedTask);
         } catch (RuntimeException e) {
-            logger.warn("⚠️ Errore: {}", e.getMessage());
+            logger.warn("⚠️ Error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            logger.error("❌ Errore nella modifica della task {}: {}", taskId, e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore nella modifica della task");
+            logger.error("❌ Error modifying task {}: {}", taskId, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error modifying task");
         }
     }
 

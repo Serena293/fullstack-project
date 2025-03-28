@@ -1,3 +1,6 @@
+// BoardComponent: A component that displays tasks as "post-its" on a board. 
+// It allows for actions such as editing, deleting, and toggling task completion.
+
 import TaskItem from "../sharedcomponents/TaskItem.jsx";
 
 const BoardComponent = ({ tasks, refreshTasks, deleteTask, editTask, toggleTaskCompletion }) => {
@@ -14,11 +17,11 @@ const BoardComponent = ({ tasks, refreshTasks, deleteTask, editTask, toggleTaskC
                 variant="post-it"
                 deleteTask={deleteTask}
                 editTask={editTask}
-                toggleTaskCompletion={toggleTaskCompletion} // ✅ Aggiunto
+                toggleTaskCompletion={toggleTaskCompletion} 
               />
             ))
           ) : (
-            <p>📌 Nessun Post-it disponibile.</p>
+            <p>📌 No Post-its available.</p>
           )}
         </div>
       </div>

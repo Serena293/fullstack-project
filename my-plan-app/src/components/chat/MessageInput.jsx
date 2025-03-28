@@ -1,12 +1,20 @@
+/**
+ * MessageInput Component
+ * 
+ * A text input form for sending messages. It allows the user to write a message 
+ * and send it to the selected contact. It handles error messages, loading state, 
+ * and ensures that the message is not empty before sending.
+ */
+
 import React, { useState, useContext } from "react";
 import { Form, InputGroup, Button, Alert, Spinner } from "react-bootstrap";
 import { Send } from "react-bootstrap-icons";
-import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto per Dark Mode
+import { DarkModeContext } from "../DarkModeContext"; // Import dark mode context
 import useAuth from "../../hooks/useAuth";
 
 const MessageInput = ({ selectedChat, onMessageSent }) => {
   const { currentUser } = useAuth();
-  const { darkMode } = useContext(DarkModeContext); // Ottieni lo stato di darkMode dal contesto
+  const { darkMode } = useContext(DarkModeContext); // Get dark mode state from context
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,12 +24,12 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
     setError(null);
 
     if (!message.trim()) {
-      setError("Il messaggio non può essere vuoto");
+      setError("Message cannot be empty");
       return;
     }
 
     if (!selectedChat || !currentUser) {
-      setError("Seleziona un contatto per inviare il messaggio");
+      setError("Select a contact to send a message");
       return;
     }
 
@@ -43,13 +51,13 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
 
       const responseText = await response.text();
       if (!responseText) {
-        throw new Error("La risposta del server è vuota");
+        throw new Error("The server response is empty");
       }
 
       const sentMessage = JSON.parse(responseText);
 
       if (!response.ok) {
-        throw new Error(sentMessage.message || "Errore nell'invio del messaggio");
+        throw new Error(sentMessage.message || "Error sending message");
       }
 
       setMessage("");
@@ -57,8 +65,8 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
         onMessageSent(sentMessage);
       }
     } catch (error) {
-      console.error("Errore nell'invio:", error);
-      setError(error.message || "Si è verificato un errore durante l'invio");
+      console.error("Error sending message:", error);
+      setError(error.message || "An error occurred while sending the message");
     } finally {
       setLoading(false);
     }
@@ -76,18 +84,18 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
         <InputGroup>
           <Form.Control
             type="text"
-            placeholder="Scrivi un messaggio..."
+            placeholder="Type a message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            aria-label="Messaggio"
+            aria-label="Message"
             disabled={loading}
             className={darkMode ? "bg-dark text-white border-0" : "bg-light text-dark"}
           />
           <Button
             type="submit"
-            variant={darkMode ? "secondary" : "primary"} // Cambia il colore del bottone in base alla modalità
+            variant={darkMode ? "secondary" : "primary"} 
             disabled={!message.trim() || loading}
-            aria-label="Invia messaggio"
+            aria-label="Send message"
           >
             {loading ? (
               <Spinner animation="border" size="sm" />

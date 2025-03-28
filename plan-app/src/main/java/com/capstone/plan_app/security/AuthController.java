@@ -28,54 +28,57 @@ public class AuthController {
         this.emailService = emailService;
     }
 
+    // Endpoint for user registration
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AppUserDTO appUserDTO) {
-        logger.debug("Registrazione richiesta per username: {}", appUserDTO.getUsername());
+        logger.debug("Registration requested for username: {}", appUserDTO.getUsername());
 
         String token = (String) authService.register(appUserDTO).getBody();
-        logger.debug("Token generato per registrazione: {}", token);
+        logger.debug("Registration token generated: {}", token);
 
         if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Token non generato"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Token generation failed"));
         }
 
-        // 📧 INVIO EMAIL DI BENVENUTO
+        // Sending welcome email to the user
         try {
-            String subject = "Benvenuto su PlanApp!";
-            String body = "<h1>Ciao " + appUserDTO.getFirstName() + ", benvenuto su PlanApp! 🎉</h1>"
-                    + "<p>Siamo felici di averti con noi. Inizia subito a organizzare i tuoi task!</p>";
+            String subject = "Welcome to PlanApp!";
+            String body = "<h1>Welcome " + appUserDTO.getFirstName() + " to PlanApp! 🎉</h1>"
+                    + "<p>We're excited to have you join. Start organizing your tasks now!</p>";
 
             emailService.sendEmail(appUserDTO.getEmail(), subject, body);
-            logger.info("Email di benvenuto inviata a {}", appUserDTO.getEmail());
+            logger.info("Welcome email sent to {}", appUserDTO.getEmail());
         } catch (MessagingException e) {
-            logger.error("Errore nell'invio dell'email a {}", appUserDTO.getEmail(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Registrazione completata, ma errore nell'invio dell'email"));
+            logger.error("Error sending email to {}", appUserDTO.getEmail(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Registration successful, but error sending welcome email"));
         }
 
-        return ResponseEntity.ok(Map.of("token", token, "message", "Registrazione completata con successo!"));
+        return ResponseEntity.ok(Map.of("token", token, "message", "Registration successful!"));
     }
 
+    // Endpoint for user login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUserLoginDTO appUserLoginDTO) {
-        logger.debug("Login richiesto per username: {}", appUserLoginDTO.getUsername());
+        logger.debug("Login requested for username: {}", appUserLoginDTO.getUsername());
 
         String token = authService.login(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword()).getBody();
-        logger.debug("Token generato dopo login: {}", token);
+        logger.debug("Generated token after login: {}", token);
 
         if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Credenziali errate o token non generato"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials or token not generated"));
         }
 
         return ResponseEntity.ok(Map.of("token", token));
     }
 
+    // Endpoint to get the currently authenticated user
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        logger.debug("Richiesta informazioni utente autenticato");
+        logger.debug("Request for authenticated user information");
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            logger.warn("Utente non autenticato");
+            logger.warn("User is not authenticated");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
         }
 
@@ -83,10 +86,10 @@ public class AuthController {
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
             AppUsers currentUser = userDetails.getAppUser();
-            logger.debug("Utente autenticato: {}", currentUser.getUsername());
+            logger.debug("Authenticated user: {}", currentUser.getUsername());
             return ResponseEntity.ok(currentUser);
         } else {
-            logger.warn("Principal non valido: {}", principal);
+            logger.warn("Invalid principal: {}", principal);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid authentication principal"));
         }
     }

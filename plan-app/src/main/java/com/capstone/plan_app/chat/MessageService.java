@@ -21,16 +21,17 @@ public class MessageService {
         this.userRepository = userRepository;
     }
 
+    // Method to send a message
     public Message sendMessage(MessageRequest request) {
         if (request.getContent() == null || request.getContent().trim().isEmpty()) {
-            throw new IllegalArgumentException("Il contenuto del messaggio non può essere vuoto");
+            throw new IllegalArgumentException("Message content cannot be empty");
         }
 
         AppUsers sender = userRepository.findById(request.getSenderId())
-                .orElseThrow(() -> new IllegalArgumentException("Utente mittente non trovato con ID: " + request.getSenderId()));
+                .orElseThrow(() -> new IllegalArgumentException("Sender not found with ID: " + request.getSenderId()));
 
         AppUsers receiver = userRepository.findByUsername(request.getReceiverUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Utente destinatario non trovato con username: " + request.getReceiverUsername()));
+                .orElseThrow(() -> new IllegalArgumentException("Receiver not found with username: " + request.getReceiverUsername()));
 
         Message message = new Message();
         message.setSender(sender);
@@ -42,30 +43,32 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
+    // Method to retrieve messages between the authenticated user and a specific user (by username)
     public List<Message> getMessagesBetweenUserAndUsername(Long userId, String username) {
         if (userId == null || username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("ID utente e username non possono essere vuoti");
+            throw new IllegalArgumentException("User ID and username cannot be empty");
         }
 
-        // Verifica che l'utente esista
+        // Check if the user exists
         userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Utente non trovato con ID: " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
-        // Verifica che l'username esista
+        // Check if the username exists
         userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("Utente non trovato con username: " + username));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
 
         return messageRepository.findMessagesBetweenUserAndUsername(userId, username);
     }
 
+    // Method to mark a message as read
     @Transactional
     public void markAsRead(Long messageId) {
         if (messageId == null || messageId <= 0) {
-            throw new IllegalArgumentException("ID messaggio non valido");
+            throw new IllegalArgumentException("Invalid message ID");
         }
 
         Message message = messageRepository.findById(messageId)
-                .orElseThrow(() -> new IllegalArgumentException("Messaggio non trovato con ID: " + messageId));
+                .orElseThrow(() -> new IllegalArgumentException("Message not found with ID: " + messageId));
 
         if (!message.isRead()) {
             message.setRead(true);

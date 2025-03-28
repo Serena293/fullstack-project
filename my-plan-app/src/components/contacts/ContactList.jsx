@@ -1,6 +1,17 @@
+/**
+ * ContactList Component
+ *
+ * Displays a list of user contacts, allowing deletion and chat initiation.
+ * Fetches contacts from the API and updates the list dynamically.
+ *
+ * Props:
+ * - onChat (function): Function to initiate a chat with a contact.
+ * - refreshContacts (function): Callback to refresh the contact list.
+ */
+
 import React, { useState, useEffect, useContext } from "react";
 import useAuth from "../../hooks/useAuth";
-import ContactItem from "./ContactItem"; 
+import ContactItem from "./ContactItem";
 import { DarkModeContext } from "../DarkModeContext";
 
 const ContactList = ({ onChat, refreshContacts }) => {

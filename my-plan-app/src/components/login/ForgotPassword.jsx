@@ -1,3 +1,6 @@
+// ForgotPassword component: A form for users to request a password reset. The user must provide their email address, 
+// and the system will send a reset link to the provided email. A success or error message will be displayed based on the outcome.
+
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";

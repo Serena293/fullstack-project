@@ -1,3 +1,6 @@
+// TaskItem: A component that displays a task with options to edit, delete, and mark as complete. 
+// It uses a modal for editing task details and updates the task list after any action.
+
 import React, { useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import { DarkModeContext } from "../DarkModeContext";
@@ -35,7 +38,7 @@ const TaskItem = ({
     toggleTaskCompletion(taskId, completed);
   };
 
-  // Funzione per formattare la data nel formato dd-mm-yyyy
+  // Function to format date in dd-mm-yyyy format
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
@@ -46,9 +49,7 @@ const TaskItem = ({
 
   return (
     <div
-      className={`task-item ${variant} ${
-        darkMode ? "dark-mode" : "light-mode"
-      }`}
+      className={`task-item ${variant} ${darkMode ? "dark-mode" : "light-mode"}`}
     >
       {dueDate && (
         <p
@@ -76,9 +77,7 @@ const TaskItem = ({
         </button>
 
         <button
-          className={`btn btn-sm ${
-            completed ? "btn-success" : "btn-outline-success"
-          }`}
+          className={`btn btn-sm ${completed ? "btn-success" : "btn-outline-success"}`}
           onClick={handleToggleComplete}
           disabled={isUpdating}
         >
@@ -104,11 +103,8 @@ const TaskItem = ({
         onHide={() => setShowModal(false)}
         className={darkMode ? "dark-mode-modal" : "light-mode-modal"}
       >
-        <Modal.Header
-          closeButton
-          className={darkMode ? "dark-mode-header" : ""}
-        >
-          <Modal.Title>Modifica Task</Modal.Title>
+        <Modal.Header closeButton className={darkMode ? "dark-mode-header" : ""}>
+          <Modal.Title>Edit Task</Modal.Title>
         </Modal.Header>
         <Modal.Body className={darkMode ? "dark-mode-body" : ""}>
           <input
@@ -137,10 +133,10 @@ const TaskItem = ({
             className="btn btn-secondary"
             onClick={() => setShowModal(false)}
           >
-            Annulla
+            Cancel
           </button>
           <button className="btn btn-primary" onClick={handleEditSubmit}>
-            Salva Modifiche
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

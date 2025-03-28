@@ -1,3 +1,7 @@
+// CreateTasksForm: A form component for adding new tasks. 
+// Users can enter a task name, description, due date, and choose to create a Post-it. 
+// The form submits the task data to the server and refreshes the task list upon success.
+
 import React, { useState } from "react";
 import axios from "axios";
 import { format, parseISO, isValid } from "date-fns";
@@ -52,10 +56,10 @@ const CreateTasksForm = ({ refreshTasks }) => {
 
       console.log("Task created successfully!");
 
-      // Aggiorna le task chiamando refreshTasks() invece di usare setTasks
+      // Refresh tasks after adding a new one
       refreshTasks();
 
-      // Resetta il form
+      // Reset the form
       setTaskData({ title: "", description: "", dueDate: "", isItPostIt: false });
     } catch (error) {
       console.error("Error creating task:", error);
@@ -104,7 +108,7 @@ const CreateTasksForm = ({ refreshTasks }) => {
               name="dueDate"
               value={taskData.dueDate}
               onChange={handleInputChange}
-              min={new Date().toISOString().split('T')[0]}
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
 

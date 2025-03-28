@@ -1,10 +1,17 @@
+/**
+ * ChatList Component
+ *
+ * Displays a list of contacts for chat selection.
+ * Supports dark mode and shows a loading spinner while fetching data.
+ */
+
 import React, { useContext } from "react";
 import { ListGroup, Spinner } from "react-bootstrap";
 import { PersonFill } from "react-bootstrap-icons";
-import { DarkModeContext } from "../DarkModeContext"; // Importa il contesto per Dark Mode
+import { DarkModeContext } from "../DarkModeContext";
 
 const ChatList = ({ contacts, onSelectChat, loading }) => {
-  const { darkMode } = useContext(DarkModeContext); // Ottieni lo stato di darkMode dal contesto
+  const { darkMode } = useContext(DarkModeContext);
 
   return (
     <div className={`d-flex flex-column ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -30,7 +37,7 @@ const ChatList = ({ contacts, onSelectChat, loading }) => {
               </ListGroup.Item>
             ))
           ) : (
-            <p className="text-center p-3">Nessuna conversazione</p>
+            <p className="text-center p-3">No conversations available</p>
           )}
         </ListGroup>
       )}

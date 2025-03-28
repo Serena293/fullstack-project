@@ -44,6 +44,6 @@ public class AppUsers {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
-   // @JsonManagedReference
+    @JsonManagedReference
     private List<AppUsers> contacts;
 }
