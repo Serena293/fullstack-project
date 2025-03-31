@@ -1,4 +1,4 @@
-@import "./colors";
+@use "./colors" as colors;
 
 .board-container {
   padding: 1.5rem;

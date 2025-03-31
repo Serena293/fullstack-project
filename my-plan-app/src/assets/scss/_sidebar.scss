@@ -1,6 +1,5 @@
-@use "./colors";
+@use "./colors" as colors;
 
-/* 📌 Sidebar - Struttura Base */
 .task-list-sidebar {
   position: fixed;
   top: 0;
@@ -12,13 +11,12 @@
   z-index: 1000;
   overflow-y: auto;
   transition: right 0.3s ease;
-  
-  /* ☀️ Light Mode (default) */
+
   background-color: rgba(colors.$light-bg, 0.85);
   box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
   border-left: 3px solid colors.$light-border;
 
-  /* 🌙 Dark Mode */
+
   &.dark-mode {
     background-color: rgba(colors.$dark-bg, 0.85);
     border-left-color: colors.$dark-border;
@@ -31,7 +29,6 @@
   }
 }
 
-/* 🔘 Header */
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -39,7 +36,6 @@
   margin-bottom: 1rem;
 }
 
-/* ❌ Pulsante chiusura */
 .close-sidebar-btn {
   background: none;
   border: none;
@@ -47,7 +43,7 @@
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 
-  /* ☀️ Light Mode */
+  
   color: colors.$light-text;
   &:hover {
     transform: scale(1.1);

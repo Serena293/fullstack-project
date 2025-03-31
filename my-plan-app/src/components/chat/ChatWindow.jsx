@@ -19,11 +19,9 @@ const ChatWindow = ({ selectedChat, darkMode }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       if (!currentUser || !selectedChat) {
-        console.log("User or selectedChat is undefined");
         return;
       }
 
-      console.log("Fetching messages for:", selectedChat);
       try {
         const response = await fetch(
           `http://localhost:8080/api/messages/chat?userId=${currentUser.userId}&username=${selectedChat.username}`,
@@ -50,7 +48,7 @@ const ChatWindow = ({ selectedChat, darkMode }) => {
 
     if (selectedChat) {
       fetchMessages();
-      const interval = setInterval(fetchMessages, 5000); // Polling every 5s
+      const interval = setInterval(fetchMessages, 5000); 
       return () => clearInterval(interval);
     }
   }, [selectedChat, currentUser]);

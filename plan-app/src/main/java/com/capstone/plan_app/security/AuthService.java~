@@ -39,10 +39,10 @@ public class AuthService {
 
     public ResponseEntity<?> register(@Valid AppUserDTO appUserDTO) {
         if (userRepo.existsByEmail(appUserDTO.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already exists!");
+            return ResponseEntity.badRequest().body("Email già esistente!");
         }
         if (userRepo.existsByUsername(appUserDTO.getUsername())) {
-            return ResponseEntity.badRequest().body("Username already exists!");
+            return ResponseEntity.badRequest().body("Username già esistente!");
         }
 
         AppUsers user = new AppUsers();
@@ -61,7 +61,7 @@ public class AuthService {
 
         return ResponseEntity.ok(
                 Map.of(
-                        "message", "User registered successfully!",
+                        "message", "Registrazione completata con successo!",
                         "userId", savedUser.getUserId()
                 )
         );
@@ -83,8 +83,8 @@ public class AuthService {
         return ResponseEntity.ok("Bearer " + jwtToken);
     }
 
-    public ResponseEntity<String> login(@NotEmpty(message = "Username required") String username,
-                                        @NotEmpty(message = "Password required") String password) {
+    public ResponseEntity<String> login(@NotEmpty(message = "Username obbligatorio") String username,
+                                        @NotEmpty(message = "Password obbligatoria") String password) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)

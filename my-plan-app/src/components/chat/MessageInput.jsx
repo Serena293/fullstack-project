@@ -9,12 +9,12 @@
 import React, { useState, useContext } from "react";
 import { Form, InputGroup, Button, Alert, Spinner } from "react-bootstrap";
 import { Send } from "react-bootstrap-icons";
-import { DarkModeContext } from "../DarkModeContext"; // Import dark mode context
+import { DarkModeContext } from "../DarkModeContext"; 
 import useAuth from "../../hooks/useAuth";
 
 const MessageInput = ({ selectedChat, onMessageSent }) => {
   const { currentUser } = useAuth();
-  const { darkMode } = useContext(DarkModeContext); // Get dark mode state from context
+  const { darkMode } = useContext(DarkModeContext); 
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);

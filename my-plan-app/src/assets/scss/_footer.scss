@@ -1,19 +1,16 @@
-@use "./colors";
+@use "./colors" as colors;
 
-/* Footer */
 footer {
   padding: 20px;
   text-align: center;
   margin-top: 30px;
   transition: background-color 0.3s ease, color 0.3s ease;
 
-  // Usa variabili globali per i colori
-  background-color: $light-navbar-bg; // Colore per light mode
-  color: $light-text;
+  background-color: colors.$light-navbar-bg;
+  color: colors.$light-text;
 
-  // Modalità scura
   .dark-mode & {
-    background-color: $dark-navbar-bg;
-    color: $dark-text;
+    background-color: colors.$dark-navbar-bg;
+    color: colors.$dark-text;
   }
 }

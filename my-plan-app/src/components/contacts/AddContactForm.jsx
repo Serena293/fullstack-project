@@ -29,7 +29,7 @@ const AddContactForm = ({ onContactAdded }) => {
         }
       );
 
-      console.log("Status:", response.status);
+     // console.log("Status:", response.status);
       const result = await response.text();
 
       if (!response.ok) {

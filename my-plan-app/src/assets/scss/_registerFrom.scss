@@ -1,68 +1,65 @@
-@use "./colors" /* Importa il file _colors.scss */
+@use "./colors" as colors;
+@use "sass:color";
 
-/* Container di registrazione */
 .register-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background-color: colors.$light-bg; /* Colore di sfondo per modalità chiara */
+  background-color: colors.$light-bg;
 
   &.dark {
-    background-color: colors.$dark-bg; /* Colore di sfondo per modalità scura */
+    background-color: colors.$dark-bg;
   }
 
-  /* Card di registrazione */
   .card {
     width: 100%;
     max-width: 400px;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: colors.$light-form-bg; /* Colore di sfondo del form in modalità chiara */
+    background-color: colors.$light-form-bg;
 
     .dark & {
-      background-color: colors.$dark-form-bg; /* Colore di sfondo del form in modalità scura */
+      background-color: colors.$dark-form-bg;
     }
 
-    /* Titolo della Card */
     h1 {
-      color: colors.$light-text; /* Colore del testo per il titolo in modalità chiara */
+      color: colors.$light-text;
       text-align: center;
       margin-bottom: 1.5rem;
 
       .dark & {
-        color: colors.$dark-text; /* Colore del testo per il titolo in modalità scura */
+        color: colors.$dark-text;
       }
     }
 
-    /* Gruppo di input */
     .form-group {
       margin-bottom: 1.5rem;
 
       label {
         display: block;
         margin-bottom: 0.5rem;
-        color: colors.$light-text; /* Colore del testo per l'etichetta in modalità chiara */
+        color: colors.$light-text;
 
         .dark & {
-          color: colors.$dark-text; /* Colore del testo per l'etichetta in modalità scura */
+          color: colors.$dark-text;
         }
       }
 
       input {
         width: 100%;
         padding: 0.75rem;
-        border: 1px solid colors.$light-border; /* Colore del bordo per input in modalità chiara */
+        border: 1px solid colors.$light-border;
         border-radius: 4px;
-        background-color: colors.$light-form-bg; /* Colore di sfondo per input in modalità chiara */
-        color: colors.$light-text; /* Colore del testo per input in modalità chiara */
+        background-color: colors.$light-form-bg;
+        color: colors.$light-text;
 
         .dark & {
-          border-color: colors.$dark-border; /* Colore del bordo per input in modalità scura */
-          background-color: colors.$dark-form-bg; /* Colore di sfondo per input in modalità scura */
-          color: colors.$dark-text; /* Colore del testo per input in modalità scura */
+          border-color: colors.$dark-border;
+          background-color: colors.$dark-form-bg;
+          color: colors.$dark-text;
         }
       }
 
@@ -73,12 +70,11 @@
       }
     }
 
-    /* Pulsante di registrazione */
     button {
       width: 100%;
       padding: 0.75rem;
-      background-color: colors.$light-accent; /* Colore di sfondo per il pulsante in modalità chiara */
-      color: colors.$light-text; /* Colore del testo per il pulsante in modalità chiara */
+      background-color: colors.$light-accent;
+      color: colors.$light-text;
       border: none;
       border-radius: 4px;
       cursor: pointer;
@@ -86,37 +82,36 @@
       margin-top: 1rem;
 
       &:hover {
-        background-color: darken(colors.$light-accent, 10%); /* Colore del pulsante al passaggio del mouse */
+        background-color: color.adjust(colors.$light-accent, $lightness: -10%);
       }
 
       .dark & {
-        background-color: colors.$dark-accent; /* Colore di sfondo per il pulsante in modalità scura */
-        color: colors.$dark-text; /* Colore del testo per il pulsante in modalità scura */
+        background-color: colors.$dark-accent;
+        color: colors.$dark-text;
 
         &:hover {
-          background-color: darken(colors.$dark-accent, 10%); /* Colore del pulsante al passaggio del mouse in modalità scura */
+          background-color: color.adjust(colors.$dark-accent, $lightness: -10%);
         }
       }
     }
 
-    /* Link di login */
     .login-link {
       margin-top: 1.5rem;
       text-align: center;
 
       p {
-        color: colors.$light-text; /* Colore del testo per il paragrafo in modalità chiara */
+        color: colors.$light-text;
 
         .dark & {
-          color: colors.$dark-text; /* Colore del testo per il paragrafo in modalità scura */
+          color: colors.$dark-text;
         }
 
         a {
-          color: colors.$light-accent; /* Colore del link in modalità chiara */
+          color: colors.$light-accent;
           text-decoration: none;
 
           .dark & {
-            color: colors.$dark-accent; /* Colore del link in modalità scura */
+            color: colors.$dark-accent;
           }
 
           &:hover {

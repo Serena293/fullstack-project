@@ -25,7 +25,6 @@ const ContactsComponent = () => {
   const [error, setError] = useState(null);
   const { darkMode } = useContext(DarkModeContext);
 
-  // Fetch contacts from API
   const refreshContacts = useCallback(async () => {
     if (!currentUser) return;
     setLoading(true);
@@ -51,7 +50,6 @@ const ContactsComponent = () => {
     }
   }, [currentUser]);
 
-  // Fetch contacts on component mount
   useEffect(() => {
     if (currentUser) {
       refreshContacts();

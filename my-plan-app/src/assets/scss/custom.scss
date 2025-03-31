@@ -1,4 +1,5 @@
-@use "./colors"; 
+// custom.scss
+@use "./colors" as *;
 @use "./theme";
 @use "./sidebar";
 @use "./general";
@@ -8,12 +9,7 @@
 @use "./taskList";
 @use "./calendar";
 @use "./forgotPassword";
-@use"./resetPassword";
+@use "./resetPassword";
 @use "./registerFrom";
 @use "./task";
-
-
-
 @use "bootstrap/scss/bootstrap";
-
-

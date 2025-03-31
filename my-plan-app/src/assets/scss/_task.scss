@@ -1,11 +1,11 @@
-@use "./colors"; 
+@use "./colors" as colors;
 
 /* Reset e Body */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: colors.$light-bg;  /* Colore di sfondo per la modalità chiara */
+  background-color: colors.$light-bg;  
 }
 
 #root {
@@ -13,7 +13,6 @@ body, html {
   background-color: inherit;
 }
 
-/* 🎨 Definizione dei temi */
 .light-mode {
   background-color: colors.$light-bg;
   color: colors.$light-text;
@@ -37,18 +36,18 @@ body, html {
   top: 0;
   bottom: 0;
   width: 4px;
-  background-color: colors.$light-accent; /* Colore per la barra di completamento */
+  background-color: colors.$light-accent;
 }
 
 .dark-mode .task-item.completed {
-  background-color: rgba(40, 167, 69, 0.1); /* Colore di background per modalità scura */
+  background-color: rgba(40, 167, 69, 0.1); 
 }
 
 .light-mode .task-item.completed {
-  background-color: rgba(40, 167, 69, 0.05); /* Colore di background per modalità chiara */
+  background-color: rgba(40, 167, 69, 0.05); 
 }
 
-/* 🏠 Home Page Layout */
+
 .app-container {
   display: flex;
   flex-direction: column;
