@@ -55,6 +55,10 @@
     color: colors.$light-text;
     &:hover {
       background-color: darken(colors.$light-accent, 10%);
+      border: none;
+    }
+    &:active {
+      background-color: darken(colors.$light-accent, 20%) !important;
     }
   }
 
