@@ -41,7 +41,7 @@ const RegisterForm = ({ theme }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "https://fullstack-project-70tb.onrender.com/api/auth/register",
         formData
       );
 

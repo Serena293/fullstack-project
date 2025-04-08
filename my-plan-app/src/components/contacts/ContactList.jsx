@@ -30,7 +30,7 @@ const ContactList = ({ onChat, refreshContacts }) => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await fetch(
-          `http://localhost:8080/api/users/${currentUser.userId}/contacts`,
+          `https://fullstack-project-70tb.onrender.com/api/users/${currentUser.userId}/contacts`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +54,7 @@ const ContactList = ({ onChat, refreshContacts }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:8080/api/users/${currentUser.userId}/contacts/${contact.username}`,
+        `https://fullstack-project-70tb.onrender.com/api/users/${currentUser.userId}/contacts/${contact.username}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

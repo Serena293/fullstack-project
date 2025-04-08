@@ -33,7 +33,7 @@ const ResetPassword = ({ theme }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/password-reset/reset",
+        "https://fullstack-project-70tb.onrender.com/api/password-reset/reset",
         { token, password }
       );
       setMessage(response.data);

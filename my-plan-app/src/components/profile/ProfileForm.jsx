@@ -19,7 +19,7 @@ const ProfileForm = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await axios.get("http://localhost:8080/api/profile", {
+        const response = await axios.get("https://fullstack-project-70tb.onrender.com/api/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

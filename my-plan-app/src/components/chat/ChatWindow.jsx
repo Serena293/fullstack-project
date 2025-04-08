@@ -24,7 +24,7 @@ const ChatWindow = ({ selectedChat, darkMode }) => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/api/messages/chat?userId=${currentUser.userId}&username=${selectedChat.username}`,
+          `https://fullstack-project-70tb.onrender.com/api/messages/chat?userId=${currentUser.userId}&username=${selectedChat.username}`,
           {
             headers: {
               "Authorization": `Bearer ${localStorage.getItem("authToken")}`,

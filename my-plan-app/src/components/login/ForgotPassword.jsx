@@ -16,7 +16,7 @@ export default function ForgotPassword({ theme }) {
     setMessage(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/password-reset/request", { email });
+      const response = await axios.post("https://fullstack-project-70tb.onrender.com/api/password-reset/request", { email });
       if (response.status === 200) {
         setMessage({ type: "success", text: "Check your email for the reset link." });
       } else {

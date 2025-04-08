@@ -37,7 +37,7 @@ const ChatPage = () => {
         // console.log("Fetching contacts with token:", token);
 
         const response = await fetch(
-          `http://localhost:8080/api/users/${currentUser.userId}/contacts`,
+          `https://fullstack-project-70tb.onrender.com/api/users/${currentUser.userId}/contacts`,
           {
             method: "GET",
             headers: {

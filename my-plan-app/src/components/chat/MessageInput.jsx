@@ -36,7 +36,7 @@ const MessageInput = ({ selectedChat, onMessageSent }) => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:8080/api/messages/send", {
+      const response = await fetch("https://fullstack-project-70tb.onrender.com/api/messages/send", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("authToken")}`,

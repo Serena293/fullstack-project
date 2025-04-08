@@ -18,7 +18,7 @@ const AddContactForm = ({ onContactAdded }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:8080/api/users/${currentUser.userId}/contacts`,
+        `https://fullstack-project-70tb.onrender.com/api/users/${currentUser.userId}/contacts`,
         {
           method: "POST",
           headers: {
