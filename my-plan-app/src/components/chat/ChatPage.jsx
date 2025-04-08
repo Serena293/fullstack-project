@@ -3,18 +3,21 @@
  *
  * Displays a chat interface where users can select a contact from the list to chat with.
  * Shows a loading spinner while fetching contacts, and allows users to view selected chat.
+ * Supports dark mode.
  */
 
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import React, { useEffect, useState, useContext } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import ChatList from "./ChatList";
 import useAuth from "../../hooks/useAuth";
 import ChatWindow from "./ChatWindow";
 import CustomNavbar from "../sharedcomponents/CustomNavbar";
 import Footer from "../sharedcomponents/Footer";
+import { DarkModeContext } from "../DarkModeContext";
 
 const ChatPage = () => {
   const { currentUser } = useAuth();
+  const { darkMode } = useContext(DarkModeContext);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -23,18 +26,14 @@ const ChatPage = () => {
     console.log("SelectedChat changed:", selectedChat);
   }, [selectedChat]);
 
-
   const handleChatSelect = (contact) => {
-   // console.log("Selected Chat - full object:", contact);
     setSelectedChat(contact);
   };
 
-  // Fetch contacts when component mounts or currentUser changes
   useEffect(() => {
     const fetchContacts = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        // console.log("Fetching contacts with token:", token);
 
         const response = await fetch(
           `https://fullstack-project-70tb.onrender.com/api/users/${currentUser.userId}/contacts`,
@@ -53,7 +52,6 @@ const ChatPage = () => {
         }
 
         const data = await response.json();
-
         setContacts(data);
       } catch (error) {
         console.error("Error fetching contacts:", error);
@@ -63,17 +61,19 @@ const ChatPage = () => {
     };
 
     if (currentUser) {
-      // console.log("Current user ID:", currentUser.userId);
       fetchContacts();
     }
   }, [currentUser]);
 
   return (
-    <Container fluid className="vh-100 d-flex flex-column">
+    <Container
+      fluid
+      className={`vh-100 d-flex flex-column ${darkMode ? "dark-mode bg-dark text-white" : "light-mode bg-light text-dark"}`}
+    >
       <CustomNavbar />
 
       <Row className="flex-grow-1">
-        <Col md={4} className="border-end">
+        <Col md={4} className={`border-end ${darkMode ? "border-secondary" : ""}`}>
           <ChatList
             contacts={contacts}
             onSelectChat={handleChatSelect}
@@ -82,9 +82,7 @@ const ChatPage = () => {
         </Col>
         <Col md={8} className="d-flex flex-column">
           {selectedChat ? (
-            <>
-              <ChatWindow selectedChat={selectedChat} className="flex-grow-1" />
-            </>
+            <ChatWindow selectedChat={selectedChat} className="flex-grow-1" />
           ) : (
             <p className="text-center p-3 flex-grow-1">
               Select a chat from the list

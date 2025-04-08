@@ -1,17 +1,19 @@
 /**
  * ChatWindow Component
- * 
+ *
  * Displays the chat window for the selected contact. Fetches and displays messages 
  * for the selected chat and allows the user to send new messages. Messages are 
- * updated every 5 seconds via polling.
+ * updated every 5 seconds via polling. Supports dark mode.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { ListGroup, Spinner } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import MessageInput from "./MessageInput";
+import { DarkModeContext } from "../DarkModeContext";
 
-const ChatWindow = ({ selectedChat, darkMode }) => {
+const ChatWindow = ({ selectedChat }) => {
+  const { darkMode } = useContext(DarkModeContext);
   const { currentUser } = useAuth();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,14 +50,14 @@ const ChatWindow = ({ selectedChat, darkMode }) => {
 
     if (selectedChat) {
       fetchMessages();
-      const interval = setInterval(fetchMessages, 5000); 
+      const interval = setInterval(fetchMessages, 5000);
       return () => clearInterval(interval);
     }
   }, [selectedChat, currentUser]);
 
   return (
     <div className={`p-3 d-flex flex-column ${darkMode ? "dark-mode" : "light-mode"}`} style={{ height: "100vh" }}>
-      <h5 className={`text-center p-2 ${darkMode ? "bg-dark navbar-dark text-white" : "bg-light text-dark"}`}>
+      <h5 className={`text-center p-2 ${darkMode ? "bg-dark text-white" : "bg-light text-dark"}`}>
         Chat with {selectedChat ? `${selectedChat.firstName} ${selectedChat.lastName}` : "Select a contact"}
       </h5>
       <div className="flex-grow-1 overflow-auto">
@@ -82,10 +84,9 @@ const ChatWindow = ({ selectedChat, darkMode }) => {
           </ListGroup>
         )}
       </div>
-      <MessageInput selectedChat={selectedChat} onMessageSent={setMessages} darkMode={darkMode} />
+      <MessageInput selectedChat={selectedChat} onMessageSent={setMessages} />
     </div>
   );
 };
 
 export default ChatWindow;
-

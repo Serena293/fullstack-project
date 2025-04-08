@@ -21,13 +21,11 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      console.log("POSTING TO:", "https://fullstack-project-70tb.onrender.com/api/auth/login");
-
-      const response = await axios.post("https://fullstack-project-70tb.onrender.com/api/auth/login", {
+            const response = await axios.post("https://fullstack-project-70tb.onrender.com/api/auth/login", {
         username,
         password,
       });
-      console.log("Axios baseURL:", axios.defaults.baseURL);
+   
 
 
       const token = response.data.token?.trim();
