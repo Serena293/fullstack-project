@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/tasks';
+const API_URL = 'https://fullstack-project-70tb.onrender.com/api/tasks';
 
 const useTasks = (userId) => {
   const [tasks, setTasks] = useState([]);

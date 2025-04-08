@@ -21,7 +21,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  const apiUrl = "http://localhost:8080"; 
+  const apiUrl = "https://fullstack-project-70tb.onrender.com"; 
   if (event.request.url.startsWith(apiUrl)) {
     //Api
     event.respondWith(

@@ -1,5 +1,5 @@
 spring.application.name=plan-app
-server.port=${PORT:8080}
+server.port=${PORT}
 
 logging.level.root=info
 #logging.level.org.springframework=DEBUG

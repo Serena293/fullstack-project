@@ -52,7 +52,7 @@ const ProfileForm = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.patch(
-        "http://localhost:8080/api/profile",
+        "https://fullstack-project-70tb.onrender.com/api/profile",
         { bio: profileData.bio },
         {
           headers: {
