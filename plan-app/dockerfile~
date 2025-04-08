@@ -10,8 +10,5 @@ COPY . .
 # Make Maven wrapper executable & build the app
 RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
-# Expose the port (required by Render)
-EXPOSE 8080
-
-# Run the Spring Boot app, binding to the port provided by Render
-CMD ["java", "-jar", "target/plan-app.jar", "--server.port=${PORT}"]
+# Run the Spring Boot app
+CMD ["java", "-jar", "target/plan-app.jar"]
