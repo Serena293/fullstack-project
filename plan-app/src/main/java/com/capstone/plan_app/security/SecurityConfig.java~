@@ -32,7 +32,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5174", "http://localhost:5173") // Assicurati che corrisponda agli URL del frontend
+                .allowedOrigins("http://localhost:5174", "http://localhost:5173","https://fullstack-project-70tb.onrender.com") // Assicurati che corrisponda agli URL del frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true)
