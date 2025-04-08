@@ -1,69 +1,57 @@
-# ===== CONFIGURAZIONI ESSENZIALI =====
-
-# Nome applicazione (opzionale ma utile per log/actuator)
 spring.application.name=plan-app
+server.port=8080
+logging.level.root=info
+#logging.level.org.springframework=DEBUG
 
-# Porta server (usa la variabile $PORT di Railway, default 8080)
-server.port=${PORT:8080}
-
-# ===== DATABASE (Configurazione per Railway PostgreSQL) =====
-spring.datasource.url=jdbc:${DATABASE_URL}  # Formato automatico di Railway
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=false
-
-# Configurazioni JPA ottimizzate (batch processing)
+management.endpoints.web.exposure.include=*
 spring.jpa.properties.hibernate.jdbc.batch_size=10
 spring.jpa.properties.hibernate.order_inserts=true
 spring.jpa.properties.hibernate.order_updates=true
 
-# ===== LOGGING =====
-logging.level.root=info
+spring.jackson.stream-write-constraints.max-nesting-depth=3000
+
+management.endpoint.health.show-details=always
+management.endpoint.mappings.enabled=true
+
+spring.output.ansi.enabled=always
 logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} %clr(%-5level){faint} [%thread] %clr(%logger{36}){cyan} - %clr(%msg){green}%n
 
-# ===== SPRING MAIL (Gmail SMTP) =====
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.default_schema=public
+
+spring.sql.init.mode=always
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
+
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
 spring.mail.username=${EMAIL_USER}
 spring.mail.password=${EMAIL_PASSWORD}
+spring.mail.protocol=smtp
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.writetimeout=5000
 
-# ===== JWT SECURITY =====
-jwt.secret=${JWT_SECRET_KEY}
-jwt.expiration-time=${JWT_EXPIRATION_TIME}
-
-# ===== SPRING ACTUATOR (Endpoint di monitoraggio) =====
-management.endpoints.web.exposure.include=*
-management.endpoint.health.show-details=always
-
-# ===== CONFIGURAZIONI COMMENTATE (NON NECESSARIE O DEPRECATE) =====
-
-# # Configurazioni DB ridondanti (Railway usa solo DATABASE_URL)
-# spring.datasource.username=${DB_USER}
-# spring.datasource.password=${DB_PASSWORD}
-# spring.sql.init.mode=always  # Solo se hai bisogno di init script SQL
-
-# # Logging troppo verboso (sconsigliato in produzione)
-# logging.level.org.springframework=DEBUG
-# logging.level.org.springframework.security=DEBUG
-
-# # Configurazioni Jackson non critiche
-# spring.jackson.stream-write-constraints.max-nesting-depth=3000
-# spring.jackson.serialization.indent-output=true
-
-# # Configurazioni ANSI console (inutile in produzione)
-# spring.output.ansi.enabled=always
-
-# # Configurazioni schema DB (default è 'public')
-# spring.jpa.properties.hibernate.default_schema=public
-
-# # Configurazioni Cloudinary (scommentare se usi il servizio)
 # cloudinary.cloud-name=${CLOUDINARY_CLOUD_NAME}
 # cloudinary.api-key=${CLOUDINARY_API_KEY}
 # cloudinary.api-secret=${CLOUDINARY_API_SECRET}
 # cloudinary.folder="ema"
 
-# # Configurazioni admin (scommentare se necessarie)
 # admin.email=${ADMIN_EMAIL}
 # admin.name=${ADMIN_NAME}
+
+# JWT configurations
+jwt.secret=${JWT_SECRET_KEY}
+jwt.expiration-time=${JWT_EXPIRATION_TIME}
+
+logging.level.org.springframework.security=DEBUG
+
+spring.mvc.format.date-time=yyyy-MM-dd
+spring.jackson.serialization.indent-output=true
