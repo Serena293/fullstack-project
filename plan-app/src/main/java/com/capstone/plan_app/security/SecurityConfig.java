@@ -47,6 +47,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/register", "/login", "/api/auth/**").permitAll()
                         .requestMatchers("/api/password-reset/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/offline.html", "/icons/**", "/manifest.json").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/tasks/*/completion").authenticated()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
@@ -57,6 +58,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
 
     @Bean
