@@ -23,7 +23,7 @@ const LoginPage = () => {
         </div>
       </div>
       
-      <div className="row justify-content-center ">
+      <div className="row justify-content-center mt-5">
         <div className="col-md-10">
           <div className="card bg-light">
             <div className="card-body text-center">
