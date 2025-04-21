@@ -2,9 +2,9 @@ import LoginForm from "./LoginForm";
 import CalendarComponent from "../sharedcomponents/CalendarComponet";
 
 const LoginPage = () => {
-  console.log("LoginPage is rendering!");
+
   return (
-    <section className="container mt-5">
+    <section className="container mt-5 ">
       <div className="row justify-content-center">
         <div className="col-md-7 mb-4">
           <div className="card shadow">
@@ -14,8 +14,8 @@ const LoginPage = () => {
           </div>
         </div>
         
-        <div className="col-md-5 mb-4">
-          <div className="card shadow">
+        <div className="col-md-5 mb-5">
+          <div className="card shadow" >
             <div className="card-body">
               <LoginForm />
             </div>
@@ -23,7 +23,7 @@ const LoginPage = () => {
         </div>
       </div>
       
-      <div className="row justify-content-center">
+      <div className="row justify-content-center ">
         <div className="col-md-10">
           <div className="card bg-light">
             <div className="card-body text-center">

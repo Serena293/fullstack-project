@@ -51,13 +51,13 @@ const LoginForm = () => {
 
   return (
     <section
-      className={`d-flex justify-content-center align-items-center vh-100 w-100 ${darkMode ? "dark-mode" : "light-mode"}`}
+      className={`d-flex justify-content-center align-items-center  w-100 ${darkMode ? "dark-mode" : "light-mode"}`}
     >
-      <div className="card p-4 login-card">
+      <div className="card p-4 login-card m-3">
         <h1 className="text-center mb-4">Login</h1>
 
         <form onSubmit={handleLogin}>
-          <div className="mb-3">
+          <div >
             <label htmlFor="username" className="form-label">
               Username
             </label>
