@@ -32,6 +32,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage/>}/>
         <Route path="/contacts" element={<ContactsComponent/>}/>
         <Route path="/chat" element={<ChatPage/>}/>
+        <Route path="/simple" element={<h1>Working?</h1>} />
       </Routes>
     </DarkModeProvider>
   );
