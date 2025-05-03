@@ -37,7 +37,9 @@ const AddContactForm = ({ onContactAdded }) => {
       }
 
       setUsername("");
-      if (onContactAdded) onContactAdded();
+      if (onContactAdded) 
+        console.log("Chiamo onContactAdded...");
+        onContactAdded();
     } catch (err) {
       setError(err.message);
     } finally {

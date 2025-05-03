@@ -1,15 +1,3 @@
-/**
- * ContactsComponent
- *
- * This component manages the user's contact list, allowing them to add new contacts
- * and view their existing ones. It fetches data from an API and updates dynamically.
- *
- * Features:
- * - Fetches and displays contacts.
- * - Allows users to add new contacts.
- * - Supports dark mode styling.
- */
-
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import AddContactForm from "./AddContactForm";
 import ContactList from "./ContactList";
@@ -20,10 +8,10 @@ import Footer from "../sharedcomponents/Footer";
 
 const ContactsComponent = () => {
   const { currentUser } = useAuth();
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { darkMode } = useContext(DarkModeContext);
+  const [contacts, setContacts] = useState([]); // Stato per contatti
+  const [loading, setLoading] = useState(true); // Stato di caricamento
+  const [error, setError] = useState(null); // Stato per errori
+  const { darkMode } = useContext(DarkModeContext); // Stato per dark mode
 
   const refreshContacts = useCallback(async () => {
     if (!currentUser) return;
@@ -42,7 +30,11 @@ const ContactsComponent = () => {
 
       if (!response.ok) throw new Error("Errore nel recupero contatti");
       const data = await response.json();
-      setContacts(data);
+
+      console.log("Nuovi contatti ricevuti:", data);
+
+      setContacts(data); // Imposta i contatti
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,29 +42,39 @@ const ContactsComponent = () => {
     }
   }, [currentUser]);
 
+  // Chiamata iniziale al fetch dei contatti
   useEffect(() => {
     if (currentUser) {
       refreshContacts();
     }
   }, [currentUser, refreshContacts]);
 
+  // Funzione per eliminare un contatto
+  const handleContactDelete = (contact) => {
+    // Aggiorna direttamente lo stato senza chiamare refreshContacts
+    setContacts(contacts.filter((c) => c.username !== contact.username));
+  };
+
   return (
     <div
-      className={`d-flex flex-column min-vh-100 ${
-        darkMode ? "dark-mode" : "light-mode"
-      }`}
+      className={`d-flex flex-column min-vh-100 ${darkMode ? "dark-mode" : "light-mode"}`}
     >
       <CustomNavbar />
       <div className="flex-grow-1">
-        <div>
-          <h3 className="text-center">Add a new contact</h3>
-          <p className="text-center">Look for other registered users</p>
-        </div>
+        <h3 className="text-center">Add a new contact</h3>
+        <p className="text-center">Look for other registered users</p>
+
         <div className="add-contact-form-container">
           <AddContactForm onContactAdded={refreshContacts} />
         </div>
+
         <div className="contact-list-container">
-          <ContactList contacts={contacts} loading={loading} error={error} />
+          <ContactList
+            contacts={contacts} 
+            loading={loading} 
+            error={error}
+            onDelete={handleContactDelete} 
+          />
         </div>
       </div>
       <Footer />
