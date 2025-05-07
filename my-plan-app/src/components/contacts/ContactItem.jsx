@@ -1,7 +1,17 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const ContactItem = ({ contact, onDelete, onChat }) => {
+  const navigate = useNavigate();
+
+  const handleChat = () => {
+    if (onChat) {
+      onChat(contact); // Optional: call any chat setup logic
+    }
+    navigate("/chat");
+  };
+
   return (
     <Card className="mb-3">
       <Card.Body className="d-flex justify-content-between align-items-center">
@@ -12,7 +22,7 @@ const ContactItem = ({ contact, onDelete, onChat }) => {
             variant="primary"
             size="sm"
             className="me-2"
-            onClick={() => onChat(contact)}
+            onClick={handleChat}
             aria-label={`Chat with ${contact.username}`}
           >
             💬
