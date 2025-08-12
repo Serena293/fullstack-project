@@ -5,7 +5,9 @@ const urlsToCache = [
   "/offline.html",
   "/manifest.json",
   "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png"
+  "/icons/icon-512x512.png",
+  "/js/main.js",
+   "/css/styles.css",
 ];
 
 self.addEventListener("install", (event) => {
