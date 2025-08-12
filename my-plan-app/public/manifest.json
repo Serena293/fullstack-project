@@ -2,7 +2,7 @@
     "name": "My Plan App",
     "short_name": "PlanApp",
     "description": "An organizzation App",
-    "start_url": "./index.html",
+    "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "background_color": "#ffffff",
