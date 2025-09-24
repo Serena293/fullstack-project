@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -59,26 +60,30 @@ public class AuthController {
     // Endpoint for user login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AppUserLoginDTO appUserLoginDTO) {
-        logger.debug("Login requested for username: {}", appUserLoginDTO.getUsername());
-
-        String token = authService.login(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword()).getBody();
-        logger.debug("Generated token after login: {}", token);
-
-        if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials or token not generated"));
+        try {
+            String token = authService.login(appUserLoginDTO.getUsername(), appUserLoginDTO.getPassword()).getBody();
+            if (token == null || token.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Invalid credentials"));
+            }
+            return ResponseEntity.ok(Map.of("token", token));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid username or password"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An unexpected error occurred"));
         }
-
-        return ResponseEntity.ok(Map.of("token", token));
     }
+
 
     // Endpoint to get the currently authenticated user
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        logger.debug("Request for authenticated user information");
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            logger.warn("User is not authenticated");
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
         }
 
@@ -86,10 +91,9 @@ public class AuthController {
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
             AppUsers currentUser = userDetails.getAppUser();
-            logger.debug("Authenticated user: {}", currentUser.getUsername());
             return ResponseEntity.ok(currentUser);
         } else {
-            logger.warn("Invalid principal: {}", principal);
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid authentication principal"));
         }
     }

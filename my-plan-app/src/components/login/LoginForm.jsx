@@ -19,6 +19,7 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('')
 
     try {
             const response = await axios.post("https://fullstack-project-70tb.onrender.com/api/auth/login", {
@@ -43,10 +44,22 @@ const LoginForm = () => {
       }
 
       navigate("/home");
-    } catch (error) {
-      setError("Invalid credentials or server error. Please try again.");
-      console.error("Login error:", error);
+    } 
+    catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) {
+        setError(error.response.data.error || "Invalid username or password");
+      } else if (error.response.status === 500) {
+        setError("Server error. Please try again later.");
+      } else {
+        setError("Unexpected error. Please try again.");
+      }
+    } else {
+      
+      setError("Network error.");
     }
+    console.error("Login error:", error);
+  }
   };
 
   return (
