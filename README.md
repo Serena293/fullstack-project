@@ -1,11 +1,11 @@
 Task Management App
 Overview
-This task management application is built with React, Spring Boot, Bootstrap, Sass, and PWA (Progressive Web App) technologies. The app allows users to save, modify, and delete tasks, providing a dynamic calendar for task organization. Additionally, users can register, manage their passwords, and communicate with other registered users via chat.
+This task management application is built with React, Spring Boot, Bootstrap, Sass, and PWA (Progressive Web App) technologies. The app allows users to save, modify, and delete tasks, providing a dynamic calendar for task organisation. Additionally, users can register, manage their passwords, and communicate with other registered users via chat.
 
 Features
 Task Management: Add, update, and delete tasks.
 
-Dynamic Calendar: Organize tasks by date using a dynamic calendar view.
+Dynamic Calendar: Organise tasks by date using a dynamic calendar view.
 
 User Registration: Users can register for an account and receive a confirmation email upon successful registration.
 
@@ -19,6 +19,7 @@ Spring Security: Integrated Spring Security for added protection and user authen
 
 User Interaction: Registered users can add other users to their accounts and chat with them in real-time.
 
+LIVE DEMO: https://fullstack-project-fe.onrender.com/login#
 Progressive Web App (PWA): The app is designed as a PWA, allowing users to install the app on their devices and use it offline, improving the user experience.
 
 Technologies Used
