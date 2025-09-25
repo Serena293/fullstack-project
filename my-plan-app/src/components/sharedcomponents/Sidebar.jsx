@@ -10,10 +10,8 @@ const Sidebar = () => {
   const { currentUser } = useAuth();
   const { tasks, error } = useTasks(currentUser?.userId);
 
-  // Display error message if task loading fails
   if (error) return <p>Error loading tasks: {error}</p>;
 
-  // Display loading message while tasks are being fetched
   if (!tasks) return <p>Loading tasks...</p>;
 
   return (
