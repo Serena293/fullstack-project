@@ -9,7 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+         navigateFallback: '/index.html'
       },
       manifest: {
         name: 'TaskyFun',
