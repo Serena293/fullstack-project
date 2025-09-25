@@ -38,12 +38,9 @@ public class PasswordResetController {
         String token = tokenService.createPasswordResetToken(user);
         String resetLink = "http://localhost:5173/resetpassword?token=" + token;
 
-        try {
+
             emailService.sendEmail(user.getEmail(), "Password Reset",
                     "Click the link to reset your password: " + resetLink);
-        } catch (MessagingException e) {
-            return ResponseEntity.status(500).body("Error sending email: " + e.getMessage());
-        }
 
         return ResponseEntity.ok("Password reset email sent to: " + email);
     }

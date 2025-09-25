@@ -1,6 +1,7 @@
 package com.capstone.plan_app.security;
 
 import com.capstone.plan_app.profile.ProfileUser;
+import com.capstone.plan_app.services.EmailService;
 import com.capstone.plan_app.user.AppUserDTO;
 import com.capstone.plan_app.user.AppUserLoginDTO;
 import com.capstone.plan_app.user.AppUsers;
@@ -26,15 +27,17 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsService userDetailsService;
     private final ProfileUserRepository profileUserRepository;
+    private final EmailService emailService;
 
     public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, AppUserRepository userRepo,
-                       PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService, ProfileUserRepository profileUserRepository) {
+                       PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService, ProfileUserRepository profileUserRepository, EmailService emailService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.profileUserRepository = profileUserRepository;
+        this.emailService = emailService;
     }
 
     public ResponseEntity<?> register(@Valid AppUserDTO appUserDTO) {
@@ -59,6 +62,7 @@ public class AuthService {
         profile.setAvatarUrl(null);
         profileUserRepository.save(profile);
 
+        emailService.sendEmail(savedUser.getEmail(), "HI", "Thank you for registering!");
         return ResponseEntity.ok(
                 Map.of(
                         "message", "User registered successfully!",

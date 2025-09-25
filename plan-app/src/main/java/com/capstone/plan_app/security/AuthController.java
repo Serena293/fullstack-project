@@ -42,17 +42,10 @@ public class AuthController {
         }
 
         // Sending welcome email to the user
-        try {
-            String subject = "Welcome to PlanApp!";
-            String body = "<h1>Welcome " + appUserDTO.getFirstName() + " to PlanApp! 🎉</h1>"
-                    + "<p>We're excited to have you join. Start organizing your tasks now!</p>";
+        emailService.sendEmail(appUserDTO.getEmail(), "Welcome!", "Thank you for registering!");
 
-            emailService.sendEmail(appUserDTO.getEmail(), subject, body);
-            logger.info("Welcome email sent to {}", appUserDTO.getEmail());
-        } catch (MessagingException e) {
-            logger.error("Error sending email to {}", appUserDTO.getEmail(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Registration successful, but error sending welcome email"));
-        }
+        logger.info("Welcome email sent to {}", appUserDTO.getEmail());
+
 
         return ResponseEntity.ok(Map.of("token", token, "message", "Registration successful!"));
     }
